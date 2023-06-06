@@ -3,7 +3,6 @@
 import Feed from "@components/Feed";
 import Link from "next/link";
 import { useState } from "react";
-import { getSession, useSession } from "next-auth/react";
 
 const Home = () => {
   const [session, setSession] = useState(true);
@@ -63,20 +62,3 @@ function User(){
 }
 
 export default Home
-
-// export async function getServerSideProps({req}){
-//   const session = await getSession({req})
-
-//   if(!session){
-//     return{
-//       redirect: {
-//         destination: 'login',
-//         permanent: false
-//       }
-//     }
-//   }
-
-//   return{
-//     props: { session }
-//   }
-// }

@@ -1,4 +1,5 @@
 import Link from "next/link"
+import MultipleSelect from "./MultipleSelect"
 
 const Form = ({ 
     type, content, setContent, submitting, handleSubmit, }) => {
@@ -46,13 +47,13 @@ const Form = ({
                             (Educação, Autismo, Psicologia, Saúde...)
                         </span>
                     </span>
+                    <MultipleSelect />
                 </label>
 
                 <label>
                     <span className="font-satoshi font-semibold text-base text-gray-700">
                         Selecione o Arquivo
                     </span>
-                
                     <input 
                         type="file"
                         onChange={(e) => setContent({ ...content,
