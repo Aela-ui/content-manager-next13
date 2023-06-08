@@ -1,16 +1,17 @@
 'use client';
 
-import * as React from 'react';
+import { login } from '@app/api/Api';
+import React, { useState } from 'react';
 
 export default function LoginForm() {
-  const handleSubmit = (event) => {
+  const [ email, setEmail] = useState('');
+  const [ password, setPassword] = useState('');
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+    const user = await login(email, password);
+    console.log(user);
+};
 
   return (
     <div class="flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-9">
@@ -20,20 +21,33 @@ export default function LoginForm() {
             Login
           </h2>
         </div>
-
         <div class="rounded bg-white max-w-md rounded overflow-hidden shadow-xl p-9">
-          <form class="space-y-4" action="#" method="POST">
+          <form onSubmit={handleSubmit} class="space-y-4" action="#" method="POST">
             <input type="hidden" name="remember" value="True"/>
             <div class="rounded-md shadow-sm -space-y-px">
               <div class="grid gap-6">
                 <div class="col-span-12">
                   <label for="first_name" class="block text-sm font-medium text-gray-700">Usuário</label>
-                  <input type="text" name="first_name" id="first_name" autocomplete="given-name" class="mt-1 p-3 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
+                  <input 
+                    type="text" 
+                    name="first_name" 
+                    id="first_name" 
+                    onChange={(e) => setEmail(e.target.value)}
+                    autocomplete="given-name" 
+                    class="mt-1 p-3 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  />
                 </div>
 
                 <div class="col-span-12">
                   <label for="email_address" class="block text-sm font-medium text-gray-700">Senha</label>
-                  <input type="text" name="email_address" id="email_address" autocomplete="email" class="mt-1 p-3 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
+                  <input 
+                    type="password" 
+                    name="email_address" 
+                    id="email_address" 
+                    onChange={(e) => setPassword(e.target.value)}
+                    autocomplete="email" 
+                    class="mt-1 p-3 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  />
                 </div>
               </div>
             </div>
