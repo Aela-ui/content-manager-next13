@@ -1,10 +1,16 @@
 'use client';
 
-import { useState } from "react";
-import { useSession } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "./contexts/authContext";
 
 const ContentCard = ({ content, handleContentClick, handleEdit, handleDelete }) => {
+  const { isUserAuthenticated } = useContext(AuthContext);
+  const [ logged, setLogged ] = useState(false);
+
+  useEffect(() => {
+    setLogged(isUserAuthenticated());
+  }, []);
+  
   return (
     <div className="prompt_card">
       <div className="flex justify-between items-start gap-5">
@@ -22,6 +28,22 @@ const ContentCard = ({ content, handleContentClick, handleEdit, handleDelete }) 
           ">
             {content.categoria}
           </p>
+
+          {logged?.user.id === postMessage.content.id && (
+            <div>
+              <p
+              className="font-inter text-sm green_gradient cursor-pointer"
+              onClick={handleEdit}>
+                Editar
+              </p>
+
+              <p
+              className="font-inter text-sm indigo_gradient cursor-pointer"
+              onClick={handleDelete}>
+                Deletar
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
