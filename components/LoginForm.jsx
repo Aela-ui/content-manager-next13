@@ -1,16 +1,31 @@
 'use client';
 
 import { login } from '@app/api/Api';
-import React, { useState } from 'react';
+import { AuthContext } from '@app/contexts/authContext';
+import { useRouter } from 'next/navigation';
+import React, { useContext, useEffect, useState } from 'react';
 
 export default function LoginForm() {
+  const router = useRouter();
+  const { setAuthState, isUserAuthenticated } = useContext(AuthContext);
+
   const [ email, setEmail] = useState('');
   const [ password, setPassword] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const user = await login(email, password);
-    console.log(user);
+
+    const response = await login(email, password);
+    
+    if(response?.token) {
+      setAuthState(response);
+      router.push('/');
+    }
+
+    if(response?.message?.status === 401) {
+      console.log("Login incorreto");
+    } 
+    
 };
 
   return (

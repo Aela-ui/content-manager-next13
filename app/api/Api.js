@@ -22,32 +22,14 @@ export const login = async (email, password) => {
     } catch (err) {
         return {
             error: true,
-            message: err,
+            message: err.response,
         };
     }
-};
+}
 
 export const logout = () => {
-    localStorage.removeItem('user');
+    localStorage.removeItem('token');
     return 0;
-};
-
-export const handleResponse = async (response) => {
-    try {
-        if (response.status !== 200) {
-            if (response.status === 401 || response.status === 500) {
-                logout();
-                History.push('/login');
-                window.location.reload();
-            }
-            const error =
-                (response.data && response.data.message) || response.statusText;
-            throw error;
-        }
-        return response.data;
-    } catch (err) {
-        logout();
-    }
 };
 
 export async function forgotPassword(email) {

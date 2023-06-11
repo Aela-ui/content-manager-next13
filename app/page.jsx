@@ -2,16 +2,22 @@
 
 import Feed from "@components/Feed";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "./contexts/authContext";
 
 const Home = () => {
-  const [session, setSession] = useState(true);
+  const { isUserAuthenticated } = useContext(AuthContext);
+  const [ logged, setLogged ] = useState(false);
+
+  useEffect(() => {
+    setLogged(isUserAuthenticated());
+  }, []);
 
   return (
     <div>
-      {session ? User():Guest()}
+      {logged ? User(): Guest()}
     </div>   
-  )
+  );
 }
 
 //guest
