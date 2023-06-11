@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "./contexts/authContext";
+import { AuthContext } from "@app/contexts/authContext";
 
 const ContentCard = ({ content, handleContentClick, handleEdit, handleDelete }) => {
   const { isUserAuthenticated } = useContext(AuthContext);
