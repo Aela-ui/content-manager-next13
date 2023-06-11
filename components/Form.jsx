@@ -1,5 +1,7 @@
 import Link from "next/link"
 import MultipleSelect from "./MultipleSelect"
+import SelectComponent from "./SelectComponent"
+import ToggleComponent from "./ToggleComponent"
 
 const Form = ({ 
     type, content, setContent, submitting, handleSubmit, }) => {
@@ -42,12 +44,30 @@ const Form = ({
 
                 <label>
                     <span className="font-satoshi font-semibold text-base text-gray-700">
+                        Usuário
+                    </span>
+                    <SelectComponent />
+                </label>
+
+                <label>
+                    <span className="font-satoshi font-semibold text-base text-gray-700">
+                        Modelo
+                    </span>
+                    <SelectComponent />
+                </label>
+
+                <label>
+                    <span className="font-satoshi font-semibold text-base text-gray-700">
                         Categoria {` `}
                         <span className="font-normal">
                             (Educação, Autismo, Psicologia, Saúde...)
                         </span>
                     </span>
                     <MultipleSelect />
+                </label>
+
+                <label>
+                    <ToggleComponent />
                 </label>
 
                 <label>

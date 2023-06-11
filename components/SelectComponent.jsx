@@ -39,7 +39,7 @@ function getStyles(name, personName, theme) {
   };
 }
 
-export default function MultipleSelect() {
+export default function SelectComponent() {
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
 
@@ -59,7 +59,6 @@ export default function MultipleSelect() {
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
-          multiple
           value={personName}
           onChange={handleChange}
           MenuProps={MenuProps}
