@@ -25,3 +25,21 @@ export const createUser = async (auth, name, email, password, categories) => {
         };
     }
 }
+
+export const findAllUsers = async (auth) => {
+    try {
+        const response = await axios.get(`${apiUrl}/users`, {
+            headers: {
+                'authorization': `Bearer ${auth.token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        return response.data;
+    } catch (err) {
+        return {
+            error: true,
+            message: err.response,
+        };
+    }
+}

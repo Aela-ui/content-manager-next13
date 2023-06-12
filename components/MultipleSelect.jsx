@@ -26,7 +26,7 @@ function getStyles(name, personName, theme) {
   };
 }
 
-export default function MultipleSelect({ data, selected, setData }) {
+export default function MultipleSelect({ data, setData }) {
   const theme = useTheme();
   const [listData, setListData] = React.useState([]);
 
@@ -41,8 +41,7 @@ export default function MultipleSelect({ data, selected, setData }) {
       typeof value === 'string' ? value.split(',') : value,
     );
 
-    let array = selected;
-    setData(value)
+    setData(value);
   };
 
   return (
