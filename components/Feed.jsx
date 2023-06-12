@@ -1,24 +1,28 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-
-import ContentCard from './ContentCard'
+import { findAllContents } from '@app/api/ApiContent';
+import { AuthContext } from '@app/contexts/authContext';
+import { useRouter } from 'next/navigation';
+import { useState, useEffect, useContext } from 'react';
+import { ContentCard } from './ContentCard';
 
 const ContentCardList = ({ data, handleContentClick }) => {
   return(
     <div className="mt-16 prompt_layout">
-      {data.map((content) => {
+      {data.map((content) => (
         <ContentCard 
-          key={content._id}
+          key={content.id}
           content={content}
           handleContentClick={handleContentClick}
         />
-      })}
+      ))}
     </div>
   )
 }
 
 const Feed = () => {
+  const router = useRouter();
+  const { authState, isUserAuthenticated } = useContext(AuthContext);
   const [searchText, setSearchText] = useState('');
   const [contents, setContents] = useState([]);
 
@@ -27,14 +31,17 @@ const Feed = () => {
   }
 
   useEffect(() => {
-    const fetchContents = async () => {
-      const response = await fetch('');
-      const data = await response.json();
+    const callApiFindAllContents = async () => {
+      const response = await findAllContents(authState);
 
-      setContents(data);
+      setContents(response);
     }
 
-    fetchContents();
+    try {
+      callApiFindAllContents();
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   return (
@@ -51,7 +58,7 @@ const Feed = () => {
         </form>
 
         <ContentCardList 
-          data={[contents]}
+          data={contents}
           handleContentClick={ () => {} }
         />
 

@@ -50,3 +50,21 @@ export const uploadContent = async (auth, contentId, file) => {
         };
     }
 }
+
+export const findAllContents = async (auth) => {
+    try {
+        const response = await axios.get(`${apiUrl}/contents`, {
+            headers: {
+                'authorization': `Bearer ${auth.token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        return response.data;
+    } catch (err) {
+        return {
+            error: true,
+            message: err.response,
+        };
+    }
+}

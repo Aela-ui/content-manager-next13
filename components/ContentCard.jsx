@@ -3,10 +3,10 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@app/contexts/authContext";
 
-const ContentCard = ({ content, handleContentClick, handleEdit, handleDelete }) => {
+export const ContentCard = ({key, content, handleContentClick, handleEdit, handleDelete}) => {
+  console.log(key, content, handleContentClick);
   const { isUserAuthenticated } = useContext(AuthContext);
   const [ logged, setLogged ] = useState(false);
-
   useEffect(() => {
     setLogged(isUserAuthenticated());
   }, []);
@@ -26,10 +26,13 @@ const ContentCard = ({ content, handleContentClick, handleEdit, handleDelete }) 
           <p className="font-inter text-sm blue_gradient cursor-pointer
             onClick={() => handleContentClick && handleContentClick(content.categoria)}
           ">
-            {content.categoria}
+            {/* {content.categories.map((category) => (
+              {cate}
+            ))} */}
+          {"Escola"}
           </p>
 
-          {logged?.user.id === postMessage.content.id && (
+          {/* {logged?.user.id === postMessage.content.id && ( */}
             <div>
               <p
               className="font-inter text-sm green_gradient cursor-pointer"
@@ -43,11 +46,9 @@ const ContentCard = ({ content, handleContentClick, handleEdit, handleDelete }) 
                 Deletar
               </p>
             </div>
-          )}
+           {/* )} */}
         </div>
       </div>
     </div>
   )
 }
-
-export default ContentCard
