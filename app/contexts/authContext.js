@@ -1,5 +1,5 @@
 "use client"
-import React from "react";
+import React, { useEffect } from "react";
 
 const AuthContext = React.createContext();
 
@@ -9,12 +9,18 @@ const AuthProvider = ({ children }) => {
     });
 
     const setUserAuthInfo = ({ token }) => {
-        const auth = localStorage.setItem("token", token);
-
         setAuthState({
-            token: auth,
+            token: token,
         });
     };
+
+    useEffect(() => {
+        setAuthState({ token: localStorage.getItem('token')});
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("token", authState.token);
+    }, [authState])
 
     // checks if the user is authenticated or not
     const isUserAuthenticated = () => {

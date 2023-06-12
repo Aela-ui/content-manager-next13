@@ -63,7 +63,7 @@ const Form = ({
                             (Educação, Autismo, Psicologia, Saúde...)
                         </span>
                     </span>
-                    <MultipleSelect />
+                    {/* <MultipleSelect /> */}
                 </label>
 
                 <label>

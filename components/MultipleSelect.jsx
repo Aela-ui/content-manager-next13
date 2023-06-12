@@ -17,19 +17,6 @@ const MenuProps = {
   },
 };
 
-const categorias = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
-
 function getStyles(name, personName, theme) {
   return {
     fontWeight:
@@ -39,18 +26,23 @@ function getStyles(name, personName, theme) {
   };
 }
 
-export default function MultipleSelect() {
+export default function MultipleSelect({ data, selected, setData }) {
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
+  const [listData, setListData] = React.useState([]);
 
   const handleChange = (event) => {
+    event.preventDefault();
     const {
       target: { value },
     } = event;
-    setPersonName(
+
+    setListData(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
+
+    let array = selected;
+    setData(value)
   };
 
   return (
@@ -60,17 +52,17 @@ export default function MultipleSelect() {
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
           multiple
-          value={personName}
+          value={listData}
           onChange={handleChange}
           MenuProps={MenuProps}
         >
-          {categorias.map((name) => (
+          {data.map((item) => (
             <MenuItem
-              key={name}
-              value={name}
-              style={getStyles(name, personName, theme)}
+              key={item.id}
+              value={item}
+              style={getStyles(item.name, listData, theme)}
             >
-              {name}
+              {item.name}
             </MenuItem>
           ))}
         </Select>
