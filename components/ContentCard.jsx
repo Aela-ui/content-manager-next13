@@ -31,24 +31,24 @@ export const ContentCard = ({key, content, handleContentClick, handleEdit, handl
             ))} */}
           {"Escola"}
           </p>
-
-          {/* {logged?.user.id === postMessage.content.id && ( */}
-            <div>
-              <p
-              className="font-inter text-sm green_gradient cursor-pointer"
-              onClick={handleEdit}>
-                Editar
-              </p>
-
-              <p
-              className="font-inter text-sm indigo_gradient cursor-pointer"
-              onClick={handleDelete}>
-                Deletar
-              </p>
-            </div>
-           {/* )} */}
         </div>
       </div>
+      
+      {/* {logged?.user.id === postMessage.content.id && ( */}
+      <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
+        <p
+        className="font-inter text-sm green_gradient cursor-pointer"
+        onClick={handleEdit}>
+          Editar
+        </p>
+
+        <p
+        className="font-inter text-sm indigo_gradient cursor-pointer"
+        onClick={handleDelete}>
+          Deletar
+        </p>
+      </div>
+      {/* )} */}
     </div>
   )
 }
