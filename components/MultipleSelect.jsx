@@ -46,7 +46,8 @@ export default function MultipleSelect({ data, setData }) {
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
+      <FormControl fullWidth variant="standard" sx={{ mt: 1 }}>
+      <InputLabel>Categoria</InputLabel>
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"

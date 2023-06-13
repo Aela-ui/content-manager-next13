@@ -60,34 +60,22 @@ const RegisterForm = () => {
 
           <div class="rounded bg-white max-w-md rounded overflow-hidden shadow-xl p-9">
           <form
-            class="space-y-4"
+            class="space-y-6"
             onSubmit={submitHandler}
           >
-            <div className="form-outline mb-4">
-              <label className="form-label" for="name_field">
-                Nome
-              </label>
-              <TextField id="outlined-basic" onChange={(e) => setName(e.target.value)} />
+            <div>
+              <TextField variant="standard" label="Nome" id="outlined-basic" onChange={(e) => setName(e.target.value)} />
             </div>
 
-            <div className="form-outline mb-4">
-              <label className="form-label" for="email_field">
-                Email
-              </label>
-              <TextField id="outlined-basic" onChange={(e) => setEmail(e.target.value)}/>
+            <div>
+              <TextField variant="standard" label="Email" id="outlined-basic" onChange={(e) => setEmail(e.target.value)}/>
             </div>
 
-            <div className="form-outline mb-4">
-              <label className="form-label" for="password_field">
-                Senha
-              </label>
-              <TextField id="outlined-basic" onChange={(e) => setPassword(e.target.value)}/>
+            <div>
+              <TextField variant="standard" label="Senha" id="outlined-basic" onChange={(e) => setPassword(e.target.value)}/>
             </div>
 
-            <div className="form-outline mb-4">
-              <label className="form-label" for="password_field">
-                Categorias
-              </label>
+            <div>
               <MultipleSelect data={categories} setData={setSelectedCategories} />
             </div>
           <div>
