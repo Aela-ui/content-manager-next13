@@ -49,7 +49,7 @@ const Feed = () => {
         <form className="relative w-full flex-center">
           <input 
             type="text"
-            placeholder="Procure por uma Categoria ou Título"
+            placeholder="Pesquise por Categoria ou Título"
             value={searchText}
             onChange={handleSearchChange}
             required
