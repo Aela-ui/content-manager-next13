@@ -171,6 +171,7 @@ export const CreateContent = () => {
                         border border-indigo-500
                         hover:bg-white hover:text-indigo-500"
                     >
+                        Criar
                     </button>
                 </div>
             </form>

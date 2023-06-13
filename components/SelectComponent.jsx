@@ -18,7 +18,7 @@ export default function SelectComponent({ data, selected, setData, type }) {
   return (
     <div>
       {type === 'object' ? (
-        <FormControl sx={{ m: 1, width: 300 }}>
+        <FormControl  fullWidth variant="standard" sx={{width: 300, mt: 1 }}>
           <Select
             labelId="demo-multiple-name-label"
             id="demo-multiple-name"
@@ -36,7 +36,7 @@ export default function SelectComponent({ data, selected, setData, type }) {
           </Select>
         </FormControl>)
       : (
-        <FormControl sx={{ m: 1, width: 300 }}>
+        <FormControl fullWidth variant="standard" sx={{ width: 300, mt: 1 }}>
           <Select
             labelId="demo-multiple-name-label"
             id="demo-multiple-name"
