@@ -5,14 +5,14 @@ import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
 
-export default function AlertComponent({open, setOpen}) {
+export default function AlertComponent({open, setOpen, message, type}) {
   //const [open, setOpen] = React.useState(true);
-
+  console.log(message, type);
   return (
     <Box sx={{ width: '100%' }}>
       <Collapse in={open}>
         <Alert
-          severity="error"
+          severity={type}
           action={
             <IconButton
               aria-label="close"
@@ -27,7 +27,7 @@ export default function AlertComponent({open, setOpen}) {
           }
           sx={{ mb: 2 }}
         >
-          Email ou senha inválidos. Tente novamente.
+          {message}
         </Alert>
       </Collapse>
     </Box>

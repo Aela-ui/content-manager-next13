@@ -6,7 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function SelectComponent({ data, selected, setData, type }) {
+export default function SelectComponent({ data, selected, setData, type, fieldName }) {
   const handleChange = (event) => {
     const {
       target: { value },
@@ -22,7 +22,7 @@ export default function SelectComponent({ data, selected, setData, type }) {
           <Select
             labelId="demo-multiple-name-label"
             id="demo-multiple-name"
-            value={selected.name}
+            value={selected[fieldName]}
             onChange={handleChange}
           >
             {data.map((item) => (
@@ -30,7 +30,7 @@ export default function SelectComponent({ data, selected, setData, type }) {
                 key={item.id}
                 value={item}
               >
-                {item.name}
+                {item.id} - {item[fieldName]}
               </MenuItem>
             ))}
           </Select>

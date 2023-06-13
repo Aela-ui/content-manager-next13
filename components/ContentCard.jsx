@@ -26,10 +26,10 @@ export const ContentCard = ({key, content, handleContentClick, handleEdit, handl
           <p className="font-inter text-sm blue_gradient cursor-pointer
             onClick={() => handleContentClick && handleContentClick(content.categoria)}
           ">
-            {/* {content.categories.map((category) => (
-              {cate}
-            ))} */}
-          {"Escola"}
+            {content.categories.map(({category}) => (
+              `${category.name} `
+            ))}
+          {/* {"Escola"} */}
           </p>
         </div>
       </div>
