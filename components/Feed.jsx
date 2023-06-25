@@ -28,16 +28,22 @@ const Feed = () => {
   const handleSearchChange = (e) => {
     const searchText = e.target.value.toLowerCase();
     setSearchText(searchText);
-    console.log(contents);
     if(searchText === '') setRows(contents)
     else{
-      const filteredContents = contents.filter((content) => {
-        const contentTitle = content.title ? content.title.toLowerCase() : '';
-        const contentCategory = content.category ? content.category.toLowerCase() : '';
-        return contentTitle.includes(searchText);
+      const filteredContents = contents.filter(({title, categories}) => {
+        const contentTitle = title ? title.toLowerCase() : '';
+        const categoriesNames = categories.filter(({category}) => {
+          return category.name.toLowerCase().includes(searchText)
+        });
+        
+        return contentTitle.includes(searchText) || categoriesNames.length > 0;
       });
       setRows(filteredContents);
     }
+  }
+
+  const handleContentClick = () => {
+
   }
 
   useEffect(() => {
@@ -70,6 +76,7 @@ const Feed = () => {
 
         <ContentCardList 
           data={rows}
+          handleContentClick={handleContentClick}
         />
 
     </section>
