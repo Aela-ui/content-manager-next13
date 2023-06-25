@@ -38,16 +38,8 @@ const Nav = () => {
                 {/*desktop navigation*/}
                 <div className="sm:flex">       
                     <div className="flex gap-3 md:gap-5">
-                        <Link href="/create-content" className="indigo_btn">
-                            Criar Conteúdo
-                        </Link>
-
-                        <Link href="/create-robo" className="indigo_btn">
-                            Robô
-                        </Link>
-
-                        <Link href="/register" className="indigo_btn">
-                            Cadastro
+                        <Link href="/manage-forms" className="indigo_btn">
+                            Gerenciamento
                         </Link>
 
                         <button onClick={handleLogout} type="button" className="outline_btn">
@@ -55,6 +47,9 @@ const Nav = () => {
                         </button>
                     </div>
                 </div>
+
+                {/* mobile navigation */}
+
             </nav>
         ): (
             <nav className="flex-between w-full mb-16 pt-3">

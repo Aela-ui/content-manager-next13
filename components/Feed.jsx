@@ -2,7 +2,6 @@
 
 import { findAllContents } from '@app/api/ApiContent';
 import { AuthContext } from '@app/contexts/authContext';
-import { useRouter } from 'next/navigation';
 import { useState, useEffect, useContext } from 'react';
 import { ContentCard } from './ContentCard';
 
@@ -21,13 +20,24 @@ const ContentCardList = ({ data, handleContentClick }) => {
 }
 
 const Feed = () => {
-  const router = useRouter();
   const { authState, isUserAuthenticated } = useContext(AuthContext);
   const [searchText, setSearchText] = useState('');
   const [contents, setContents] = useState([]);
+  const [rows, setRows] = useState([]);
 
   const handleSearchChange = (e) => {
-
+    const searchText = e.target.value.toLowerCase();
+    setSearchText(searchText);
+    console.log(contents);
+    if(searchText === '') setRows(contents)
+    else{
+      const filteredContents = contents.filter((content) => {
+        const contentTitle = content.title ? content.title.toLowerCase() : '';
+        const contentCategory = content.category ? content.category.toLowerCase() : '';
+        return contentTitle.includes(searchText);
+      });
+      setRows(filteredContents);
+    }
   }
 
   useEffect(() => {
@@ -35,6 +45,7 @@ const Feed = () => {
       const response = await findAllContents(authState);
 
       setContents(response);
+      setRows(response);
     }
 
     try {
@@ -58,8 +69,7 @@ const Feed = () => {
         </form>
 
         <ContentCardList 
-          data={contents}
-          handleContentClick={ () => {} }
+          data={rows}
         />
 
     </section>

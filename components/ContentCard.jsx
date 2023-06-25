@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@app/contexts/authContext";
 
 export const ContentCard = ({key, content, handleContentClick, handleEdit, handleDelete}) => {
-  console.log(key, content, handleContentClick);
   const { isUserAuthenticated } = useContext(AuthContext);
   const [ logged, setLogged ] = useState(false);
   useEffect(() => {
