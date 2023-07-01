@@ -5,14 +5,13 @@ import { AuthContext } from '@app/contexts/authContext';
 import { useState, useEffect, useContext } from 'react';
 import { ContentCard } from './ContentCard';
 
-const ContentCardList = ({ data, handleContentClick }) => {
+const ContentCardList = ({ data }) => {
   return(
     <div className="mt-16 prompt_layout">
       {data.map((content) => (
         <ContentCard 
           key={content.id}
           content={content}
-          handleContentClick={handleContentClick}
         />
       ))}
     </div>
@@ -40,10 +39,6 @@ const Feed = () => {
       });
       setRows(filteredContents);
     }
-  }
-
-  const handleContentClick = () => {
-
   }
 
   useEffect(() => {
@@ -76,7 +71,6 @@ const Feed = () => {
 
         <ContentCardList 
           data={rows}
-          handleContentClick={handleContentClick}
         />
 
     </section>

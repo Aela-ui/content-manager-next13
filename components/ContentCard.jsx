@@ -2,13 +2,38 @@
 
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@app/contexts/authContext";
+import { deleteContent } from "@app/api/ApiContent";
 
-export const ContentCard = ({key, content, handleContentClick, handleEdit, handleDelete}) => {
-  const { isUserAuthenticated } = useContext(AuthContext);
+export const ContentCard = ({ content, handleEdit, auth}) => {
+  const { authState, isUserAuthenticated } = useContext(AuthContext);
   const [ logged, setLogged ] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   useEffect(() => {
-    setLogged(isUserAuthenticated());
-  }, []);
+    if(!isUserAuthenticated()) router.push('/')
+}, []);
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+
+    const response = await deleteContent(authState, content.id);
+    setIsDeleting(true);
+
+  
+    try { 
+      // Check the response and handle accordingly
+      if (response.error) {
+        console.log("Error deleting content:", response.message);
+      } else {
+        console.log("Content deleted successfully");
+        // Perform any additional actions after successful deletion
+      }
+    } catch (error) {
+      console.log("Error deleting content:", error.message);
+    }
+  
+    setIsDeleting(false);
+  };
   
   return (
     <div className="prompt_card">
@@ -22,11 +47,12 @@ export const ContentCard = ({key, content, handleContentClick, handleEdit, handl
             {content.description}
           </p>
 
-          <p className="font-inter text-sm blue_gradient cursor-pointer">
-            {content.categories.map(({category}) => (
-              <p onClick={handleContentClick}>{category.name}</p>
+          <p className="font-inter text-sm blue_gradient">
+            {content.categories.map(({ category }) => (
+              <p key={category.id}>
+                {category.name}
+              </p>
             ))}
-          {/* {"Escola"} */}
           </p>
         </div>
       </div>
@@ -40,9 +66,8 @@ export const ContentCard = ({key, content, handleContentClick, handleEdit, handl
         </p>
 
         <p
-        className="font-inter text-sm indigo_gradient cursor-pointer"
-        onClick={handleDelete}>
-          Deletar
+        className="font-inter text-sm indigo_gradient cursor-pointer"onClick={(e) => handleDelete(e)}>
+          {isDeleting ? "Deleting..." : "Deletar"}
         </p>
       </div>
       {/* )} */}
