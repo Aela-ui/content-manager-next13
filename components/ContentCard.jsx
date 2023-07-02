@@ -3,8 +3,9 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@app/contexts/authContext";
 import { deleteContent } from "@app/api/ApiContent";
+import Link from "next/link";
 
-export const ContentCard = ({ content, updated, setUpdated, handleEdit }) => {
+export const ContentCard = ({ content, updated, setUpdated }) => {
   const { authState, isUserAuthenticated } = useContext(AuthContext);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -58,11 +59,18 @@ export const ContentCard = ({ content, updated, setUpdated, handleEdit }) => {
 
         {/* {logged?.user.id === postMessage.content.id && ( */}
         <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
-          <p
-          className="font-inter text-sm green_gradient cursor-pointer"
-          onClick={handleEdit}>
-            Editar
-          </p>
+          <Link href={{
+            pathname:"/create-content",
+            query:{
+              id:content.id
+            }
+          }}>
+            <p
+            className="font-inter text-sm green_gradient cursor-pointer"
+            >
+              Editar
+            </p>
+          </Link>
 
           <p
           className="font-inter text-sm indigo_gradient cursor-pointer"onClick={(e) => handleDelete(e)}>

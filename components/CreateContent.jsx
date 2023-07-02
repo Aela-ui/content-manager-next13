@@ -2,15 +2,17 @@ import Link from "next/link"
 import MultipleSelect from "./MultipleSelect"
 import SelectComponent from "./SelectComponent"
 import { useContext, useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { AuthContext } from "@app/contexts/authContext"
 import { findAllUsers } from "@app/api/ApiUser"
 import { findAllCategories } from "@app/api/ApiCategory"
 import { ToggleButton, ToggleButtonGroup } from "@mui/material"
 import { createContent, uploadContent } from "@app/api/ApiContent"
 import AlertComponent from "./AlertComponent"
+import { findContent } from "@app/api/ApiContent"
 
 export const CreateContent = () => {
+    const searchParams=useSearchParams();
     const router = useRouter();
     const { authState, isUserAuthenticated } = useContext(AuthContext);
     const [title, setTitle] = useState('');
@@ -55,7 +57,28 @@ export const CreateContent = () => {
             console.log(error);
         }
     }, [authState]);
-    
+
+    useEffect(() => {
+        const callApiFindContent = async () => {
+            const {data} = await findContent(authState, searchParams.get('id'));
+            console.log(data);
+            const {title, description, model, isPublic, user, categories} = data
+            setTitle(title);
+            setDescription(description);
+            setModel(model);
+            setIsPublic(isPublic); 
+            setUser(user);
+            setSelectedCategories(categories);
+        }
+        
+        try { 
+            if(searchParams.get('id'))
+                callApiFindContent();
+        } catch (error) {
+            console.log(error);
+        }
+    }, [authState]);
+
     const handleChange = (event, newAlignment) => {
         setIsPublic(newAlignment);
     };
@@ -105,7 +128,8 @@ export const CreateContent = () => {
 
                         <input 
                             onChange={(e) => setTitle(e.target.value)}
-                            title="value" 
+                            title="value"
+                            value={title} 
                             className="form_input"
                             placeholder="Escreva o título aqui..."
                             required
@@ -114,6 +138,7 @@ export const CreateContent = () => {
 
                         <textarea
                             onChange={(e) => setDescription(e.target.value)}
+                            value={description}
                             placeholder="Escreva sua descrição aqui..."
                             required
                             className="form_textarea"
@@ -125,7 +150,7 @@ export const CreateContent = () => {
                         <span className="font-satoshi font-semibold text-base text-gray-700">
                             Usuário
                         </span>
-                        <SelectComponent 
+                        <SelectComponent
                             data={users} 
                             selected={user} 
                             setData={setUser} 

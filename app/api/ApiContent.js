@@ -124,3 +124,30 @@ export const findAllContents = async (auth) => {
         };
     }
 }
+
+export const findContent = async (auth, contentId) => {
+    try {
+      const response = await axios.get(`${apiUrl}/contents/${contentId}`, {
+        headers: {
+          'authorization': `Bearer ${auth.token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      return response;
+    } catch (err) {
+      if (err.response) {
+        return {
+          status: err.response.status,
+          error: true,
+          message: err.response.data.message,
+        };
+      } else {
+        return {
+          status: 500,
+          error: true,
+          message: 'An error occurred during the delete request.',
+        };
+      }
+    }
+  };

@@ -1,7 +1,4 @@
 import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
@@ -14,6 +11,7 @@ export default function SelectComponent({ data, selected, setData, type, fieldNa
     
     setData(value);
   };
+  console.log(selected);
 
   return (
     <div>
