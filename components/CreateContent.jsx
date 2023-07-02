@@ -77,6 +77,7 @@ export const CreateContent = () => {
             console.log(responseUpload);
             setMessage("Novo conteúdo criado");
             setPopUpType("success");
+            router.push('/');
         } else {
             setMessage("Erro ao criar conteúdo");
             setPopUpType("error");

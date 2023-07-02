@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 
 const ITEM_HEIGHT = 48;
@@ -26,7 +25,7 @@ function getStyles(name, personName, theme) {
   };
 }
 
-export default function MultipleSelect({ data, setData }) {
+export default function MultipleSelect({ data, setData, label }) {
   const theme = useTheme();
   const [listData, setListData] = React.useState([]);
 
@@ -47,25 +46,26 @@ export default function MultipleSelect({ data, setData }) {
   return (
     <div>
       <FormControl fullWidth variant="standard" sx={{ width: 300, mt: 1 }}>
-        <Select
-          labelId="demo-multiple-name-label"
-          id="demo-multiple-name"
-          multiple
-          value={listData}
-          onChange={handleChange}
-          MenuProps={MenuProps}
-        >
-          {data.map((item) => (
-            <MenuItem
-              key={item.id}
-              value={item}
-              style={getStyles(item.name, listData, theme)}
-            >
-              {item.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+        <InputLabel id="demo-multiple-name-label">{label}</InputLabel>
+          <Select
+            labelId="demo-multiple-name-label"
+            id="demo-multiple-name"
+            multiple
+            value={listData}
+            onChange={handleChange}
+            MenuProps={MenuProps}
+          >
+            {data.map((item) => (
+              <MenuItem
+                key={item.id}
+                value={item}
+                style={getStyles(item.name, listData, theme)}
+              >
+                {item.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
     </div>
   );
 }

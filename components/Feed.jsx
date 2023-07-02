@@ -5,13 +5,15 @@ import { AuthContext } from '@app/contexts/authContext';
 import { useState, useEffect, useContext } from 'react';
 import { ContentCard } from './ContentCard';
 
-const ContentCardList = ({ data }) => {
+const ContentCardList = ({ data, updated, setUpdated }) => {
   return(
     <div className="mt-16 prompt_layout">
       {data.map((content) => (
         <ContentCard 
           key={content.id}
           content={content}
+          updated={updated}
+          setUpdated={setUpdated}
         />
       ))}
     </div>
@@ -23,6 +25,7 @@ const Feed = () => {
   const [searchText, setSearchText] = useState('');
   const [contents, setContents] = useState([]);
   const [rows, setRows] = useState([]);
+  const [updated, setUpdated] = useState(false);
 
   const handleSearchChange = (e) => {
     const searchText = e.target.value.toLowerCase();
@@ -54,7 +57,7 @@ const Feed = () => {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [updated]);
 
   return (
     <section className='feed'>
@@ -71,6 +74,8 @@ const Feed = () => {
 
         <ContentCardList 
           data={rows}
+          updated={updated}
+          setUpdated={setUpdated}
         />
 
     </section>
