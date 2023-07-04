@@ -1,9 +1,9 @@
-import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
+import  React, { useEffect, useState } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
+import { Checkbox, ListItemText, useTheme } from '@mui/material';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -21,28 +21,31 @@ function getStyles(name, personName, theme) {
     fontWeight:
       personName.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
+        : theme.typography.fontWeightMedium
   };
 }
 
-export default function MultipleSelect({ data, setData, label }) {
+export default function MultipleSelect({ data, selected, setData, label }) {
   const theme = useTheme();
-  const [listData, setListData] = React.useState([]);
+  const [selectedNames, setSelectedNames] = useState([]);
 
   const handleChange = (event) => {
     event.preventDefault();
     const {
       target: { value },
     } = event;
-
-    setListData(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
+    
+    setSelectedNames(
+      typeof value === "string" ? value.split(",") : value
     );
-
-    setData(value);
+    let temp = data.filter(e => value.includes(e.name))
+    setData(temp)
   };
 
+  useEffect(() => {
+    setSelectedNames(selected.map((item) => item.name));
+  }, [selected]);
+ 
   return (
     <div>
       <FormControl fullWidth variant="standard" sx={{ width: 300, mt: 1 }}>
@@ -51,15 +54,14 @@ export default function MultipleSelect({ data, setData, label }) {
             labelId="demo-multiple-name-label"
             id="demo-multiple-name"
             multiple
-            value={listData}
+            value={selectedNames}
             onChange={handleChange}
-            MenuProps={MenuProps}
           >
             {data.map((item) => (
               <MenuItem
                 key={item.id}
-                value={item}
-                style={getStyles(item.name, listData, theme)}
+                value={item.name}
+                style={getStyles(item.name, selectedNames, theme)}
               >
                 {item.name}
               </MenuItem>

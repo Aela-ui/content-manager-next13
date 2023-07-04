@@ -80,9 +80,17 @@ export const deleteContent = async (auth, contentId) => {
     }
   };
 
-export const editContent = async (auth, contentId) => {
+export const editContent = async (auth, title, description, model, userId, isPublic, categories, contentId) => {
     try {
-        const response = await axios.post(`${apiUrl}/contents/${contentId}`, { 
+      console.log({ 
+        title: title, 
+        description: description, 
+        model: model, 
+        userId: userId, 
+        isPublic: isPublic, 
+        categories: categories
+    });
+        const response = await axios.patch(`${apiUrl}/contents/${contentId}`, { 
             title: title, 
             description: description, 
             model: model, 

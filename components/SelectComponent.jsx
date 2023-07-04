@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
@@ -11,16 +11,16 @@ export default function SelectComponent({ data, selected, setData, type, fieldNa
     
     setData(value);
   };
-  console.log(selected);
 
   return (
     <div>
       {type === 'object' ? (
-        <FormControl  fullWidth variant="standard" sx={{width: 300, mt: 1 }}>
+        <FormControl fullWidth variant="standard" sx={{width: 300, mt: 1 }}>
           <Select
             labelId="demo-multiple-name-label"
             id="demo-multiple-name"
-            value={selected[fieldName]}
+            value={selected}
+            renderValue={(item) => item ? `${item.id} - ${item[fieldName]}` : ``}
             onChange={handleChange}
           >
             {data.map((item) => (

@@ -7,12 +7,12 @@ import { AuthContext } from "@app/contexts/authContext"
 import { findAllUsers } from "@app/api/ApiUser"
 import { findAllCategories } from "@app/api/ApiCategory"
 import { ToggleButton, ToggleButtonGroup } from "@mui/material"
-import { createContent, uploadContent } from "@app/api/ApiContent"
+import { createContent, editContent, uploadContent } from "@app/api/ApiContent"
 import AlertComponent from "./AlertComponent"
 import { findContent } from "@app/api/ApiContent"
 
 export const CreateContent = () => {
-    const searchParams=useSearchParams();
+    const searchParams = useSearchParams();
     const router = useRouter();
     const { authState, isUserAuthenticated } = useContext(AuthContext);
     const [title, setTitle] = useState('');
@@ -68,7 +68,7 @@ export const CreateContent = () => {
             setModel(model);
             setIsPublic(isPublic); 
             setUser(user);
-            setSelectedCategories(categories);
+            setSelectedCategories(categories.map(({category}) => category));
         }
         
         try { 
@@ -88,6 +88,25 @@ export const CreateContent = () => {
           setFile(e.target.files[0]);
         }
     };
+
+    const handleEdit = async (e) => {
+        e.preventDefault();
+        
+        const response = await editContent(authState, title, description, model, user.id, isPublic, selectedCategories, searchParams.get('id'));
+        if(response?.status === 200) {
+            if(file) {
+                const responseUpload = await uploadContent(authState, response.data.id, file);
+                console.log(responseUpload);
+            }
+            setMessage("Conteúdo editado");
+            setPopUpType("success");
+        } else {
+            setMessage("Erro ao editar conteúdo");
+            setPopUpType("error");
+            console.log(response.message);
+        }
+        setOpen(true);
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -112,20 +131,25 @@ export const CreateContent = () => {
         <>
             <section className="w-full max-w-full flex-start flex-col">
                 <h1 className="head_text text-left">
+                {searchParams.get('id') ? (
+                    <span className="indigo_gradient">Editar Conteúdo</span>
+                ): (
                     <span className="indigo_gradient">Criar Conteúdo</span>
+                )}
                 </h1>
 
                 <p className="desc text-left max-w-md">
                     Crie e compartilhe conteúdos incríveis!
                 </p>
 
-                <form onSubmit={handleSubmit} className="w-full max-w-2xl mt-10 flex flex-col
+                <form onSubmit={searchParams.get('id') ? handleEdit: handleSubmit} className="w-full max-w-2xl mt-10 flex flex-col
                 gap-7 glassmorphism">
                     <label>
-                        <span className="font-satoshi font-semibold text-base text-gray-700">
+                        {!searchParams.get('id') ? (
+                            <span className="font-satoshi font-semibold text-base text-gray-700">
                             Novo Conteúdo
-                        </span>
-
+                            </span>
+                        ): null}
                         <input 
                             onChange={(e) => setTitle(e.target.value)}
                             title="value"
@@ -173,7 +197,7 @@ export const CreateContent = () => {
                                 (Educação, Autismo, Psicologia, Saúde...)
                             </span>
                         </span>
-                        <MultipleSelect data={categories} setData={setSelectedCategories} />
+                        <MultipleSelect data={categories} selected={selectedCategories} setData={setSelectedCategories} />
                     </label>
 
                     <label>
@@ -196,7 +220,6 @@ export const CreateContent = () => {
                         <input 
                             type="file"
                             className="form_input"
-                            required
                             onChange={handleFileChange}
                             >
                         </input >
@@ -206,15 +229,28 @@ export const CreateContent = () => {
                         <Link href="/" className="text-gray-500 text-sm">
                             Cancelar
                         </Link>
-                            
-                        <button type="submit"
-                            className="px-5 py-1.5 text-sm bg-indigo-500 text-white
-                            rounded-full
-                            border border-indigo-500
-                            hover:bg-white hover:text-indigo-500"
-                        >
-                            Criar
-                        </button>
+                        {searchParams.get('id') ? (
+                            <button 
+                                type="submit"
+                                className="px-5 py-1.5 text-sm bg-indigo-500 text-white
+                                rounded-full
+                                border border-indigo-500
+                                hover:bg-white hover:text-indigo-500"
+                            >
+                                Editar
+                            </button>
+                        ): (
+                            <button 
+                                type="submit"
+                                className="px-5 py-1.5 text-sm bg-indigo-500 text-white
+                                rounded-full
+                                border border-indigo-500
+                                hover:bg-white hover:text-indigo-500"
+                            >
+                                Criar
+                            </button>
+                        )}    
+                        
                     </div>
                 </form>
             </section>
