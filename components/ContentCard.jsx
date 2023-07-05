@@ -1,16 +1,57 @@
 'use client';
-
+import { styled } from '@mui/material/styles';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@app/contexts/authContext";
 import { deleteContent } from "@app/api/ApiContent";
 import Link from "next/link";
 import { getPermission } from "@utils/getPermission";
 import AddContentModal from "./AddContentModal";
+import Divider from "@mui/material/Divider";
+import SmartToyOutlinedIcon from '@mui/icons-material/SmartToyOutlined';
+import { indigo } from '@mui/material/colors';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import { useRouter } from "next/navigation"
+import DialogTitle from '@mui/material/DialogTitle';
 
-export const ContentCard = ({ content, updated, setUpdated }) => {
+const ExpandMore = styled((props) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+  })(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
+
+export default function ContentCard({ content, updated, setUpdated }) {
+  const [expanded, setExpanded] = useState(false);
   const { authState, isUserAuthenticated } = useContext(AuthContext);
   const [isDeleting, setIsDeleting] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const router = useRouter();
+
+  const handleClickOpenDelete = () => {
+    setOpenDelete(true);
+  };
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+  };
+
 
   useEffect(() => {
     if(!isUserAuthenticated()) router.push('/')
@@ -29,6 +70,7 @@ export const ContentCard = ({ content, updated, setUpdated }) => {
       } else {
         console.log("Content deleted successfully");
         setUpdated(!updated);
+        handleCloseDelete();
       }
     } catch (error) {
       console.log("Error deleting content:", error.message);
@@ -41,63 +83,92 @@ export const ContentCard = ({ content, updated, setUpdated }) => {
     e.preventDefault();
     setOpen(false);
   }
-  
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
   return (
-    <>   
-      <div className="prompt_card">
-        <div className="flex justify-between items-start gap-5">
-          <div className="flex flex-col">
-            <h3 className="font-satoshi font-semibold text-gray-900">
-              {content.title}
-            </h3>
-
-            <p className="my-4 font-satoshi text-sm text-gray-700">
-              {content.description}
-            </p>
-
-            <p className="my-4 font-satoshi text-sm text-gray-700">
-              {content.isPublic ? 'Público': 'Privado'}
-            </p>
-
-            <p className="font-inter text-sm blue_gradient">
-              {content.categories.map(({ category }) => (
+    <>
+    <Card>
+      <CardHeader
+        action={
+          <IconButton aria-label="add robot">
+           <SmartToyOutlinedIcon sx={{ color: indigo[500] }} onClick={() => setOpen(true)}/>
+          </IconButton>
+        }
+        title={content.title}
+      />
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+            {content.categories.map(({ category }) => (
                 <p key={category.id}>
                   {category.name}
                 </p>
-              ))}
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
+            ))}
+        </Typography>
+        <Divider variant="middle" sx={{ m: 1 }}/>
+        <Typography variant="body2" color="text.secondary">
+          {content.isPublic ? 'Público': 'Privado'}
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
         {(getPermission(authState.user.role.permissions, "edit-all-contents") || content.user.id === authState.user.id) && (
-         <>
-          <Link href={{
-              pathname:"/create-content",
-              query:{
-                id:content.id
-              }
-            }}>
-              <p
-              className="font-inter text-sm green_gradient cursor-pointer"
-              >
-                Editar
-              </p>
-            </Link>
+        <>
+          <IconButton aria-label="edit the content">
+              <Link href={{
+                pathname: "/create-content",
+                query: {
+                  id: content.id
+                }
+              }}>
+                <EditOutlinedIcon sx={{ color: indigo[500] }} />
+              </Link>
+           </IconButton>
 
-            <p
-            className="font-inter text-sm red_gradient cursor-pointer"onClick={(e) => handleDelete(e)}>
-              {isDeleting ? "Deleting..." : "Deletar"}
-            </p>
-            </>
-        )}
-            <p
-              className="font-inter text-sm indigo_gradient cursor-pointer" onClick={() => setOpen(true)}>
-              Adicionar a um robô
-            </p>
-        </div>
-        <AddContentModal open={open} contentId={content.id} handleClose={handleClose}/>
-      </div>
+          <IconButton aria-label="delete">
+            <DeleteOutlineOutlinedIcon sx={{ color: indigo[500] }} onClick={handleClickOpenDelete} />
+          </IconButton>
+          <Dialog
+            open={openDelete}
+            onClose={handleCloseDelete}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Tem certeza que deseja deletar?"}
+            </DialogTitle>
+            <DialogActions>
+              <Button onClick={handleCloseDelete}>Cancelar</Button>
+              <Button onClick={(e) => handleDelete(e)}>
+                {isDeleting ? "Deleting..." : "Deletar"}
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+        </>
+      )}
+
+          <ExpandMore
+            sx={{ color: indigo[500] }}
+            expand={expanded}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+          >
+            <ExpandMoreIcon />
+          </ExpandMore>
+          </CardActions>
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Typography paragraph>Descrição:</Typography>
+              <Typography paragraph>
+                {content.description}
+              </Typography>
+            </CardContent>
+          </Collapse>
+        </Card>
+      <AddContentModal open={open} contentId={content.id} handleClose={handleClose}/>
     </>
   );
-};
+}

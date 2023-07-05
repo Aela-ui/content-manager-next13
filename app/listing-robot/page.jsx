@@ -1,7 +1,9 @@
+import FeedRobo from "@components/FeedRobo"
+
 const ListingRobot = () => {
   return (
     <div>
-        oi
+        <FeedRobo />
     </div>
   )
 }

@@ -3,12 +3,14 @@
 import { findAllContents, findAllUserContents } from '@app/api/ApiContent';
 import { AuthContext } from '@app/contexts/authContext';
 import { useState, useEffect, useContext } from 'react';
-import { ContentCard } from './ContentCard';
+import ContentCard from './ContentCard';
 import { getPermission } from '@utils/getPermission';
+import Grid from '@mui/material/Unstable_Grid2';
+import Box from '@mui/material/Box';
 
 const ContentCardList = ({ data, updated, setUpdated }) => {
   return(
-    <div className="mt-16 prompt_layout">
+    <>
       {data.map((content) => (
         <ContentCard 
           key={content.id}
@@ -17,7 +19,7 @@ const ContentCardList = ({ data, updated, setUpdated }) => {
           setUpdated={setUpdated}
         />
       ))}
-    </div>
+    </>
   )
 }
 
@@ -72,25 +74,42 @@ const Feed = () => {
   }, [updated]);
 
   return (
-    <section className='feed'>
+    <>
+    <>
+      <section className='feed'>
         <form className="relative w-full flex-center">
-          <input 
+          <input
             type="text"
             placeholder="Pesquise por Categoria ou Título"
             value={searchText}
             onChange={handleSearchChange}
             required
-            className="search_input peer"
-          />
+            className="search_input peer" />
         </form>
+      </section>
+    </>
+    <>
+        <Box sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          margin: "auto",
+          width: "fit-content",
+          '& > :not(style)': {
+            m: 4,
+            width: 300,
+            p:2
+          }
+        }}>
 
-        <ContentCardList 
-          data={rows}
-          updated={updated}
-          setUpdated={setUpdated}
-        />
+            <ContentCardList
+              data={rows}
+              updated={updated}
+              setUpdated={setUpdated} />
+        </Box>
 
-    </section>
+      </>
+      </>
+    
   )
 }
 

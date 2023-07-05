@@ -14,7 +14,7 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 400,
     bgcolor: 'background.paper',
-    border: '1px solid #000',
+    border: '1px solid #fff',
     borderRadius: '10px',
     boxShadow: 24,
     pt: 2,
@@ -84,14 +84,11 @@ export default function AddContentModal({open, contentId, handleClose}) {
                 />
                 :null
             }
-            <h1 className="indigo_gradient">
-                Adicionar Conteúdo ao Robô
-            </h1>
             <form onSubmit={handleSubmit} className="w-full max-w-2xl mt-10 flex flex-col
-                gap-7 glassmorphism">
+                gap-7">
                 <label>
-                    <span className="font-satoshi font-semibold text-base text-gray-700">
-                        Robô
+                    <span className="font-satoshi font-semibold text-base indigo_gradient">
+                        Adicionar Conteúdo ao Robô
                     </span>
                     <SelectComponent 
                         data={robots}
@@ -102,14 +99,17 @@ export default function AddContentModal({open, contentId, handleClose}) {
                         disabled={false}
                     />
                 </label>
-                <div className="flex-end mx-13 mb-5 gap-4">
+                <div className="flex-between mx-13 mb-5 gap-4">
+                    <button className="text-gray-500 text-sm" onClick={handleClose}>
+                        Fechar
+                    </button>
                     <button type="submit"
-                            className="px-5 py-1.5 text-sm bg-indigo-500 text-white
-                            rounded-full
-                            border border-indigo-500
-                            hover:bg-white hover:text-indigo-500"
+                        className="px-5 py-1.5 text-sm bg-indigo-500 text-white
+                        rounded-full
+                        border border-indigo-500
+                        hover:bg-white hover:text-indigo-500"
                     >
-                        Adicionar
+                        Confirmar
                     </button>
                 </div>
             </form>

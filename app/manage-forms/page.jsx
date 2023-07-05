@@ -1,5 +1,5 @@
 'use client';
-import PaperManageComponent from "@components/PaperManageComponent.1"
+import PaperManageComponent from "@components/PaperManageComponent"
 
 const ManageForms = () => {
     return (
