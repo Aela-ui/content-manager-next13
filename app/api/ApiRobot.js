@@ -26,3 +26,66 @@ export const createRobot = async (auth, name, mac, model, users, contentId) => {
         };
     }
 }
+
+export const editContentRobot = async (auth, robotId, contentId) => {
+    try {
+        console.log(robotId, contentId);
+        const response = await axios.patch(`${apiUrl}/robots/${robotId}`, { 
+            contentId: contentId, 
+        },
+        {
+            headers: {
+                'authorization': `Bearer ${auth.token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        return response;
+    } catch (err) {
+        return {
+            status: err.response.status,
+            error: true,
+            message: err.response.data.message,
+        };
+    }
+}
+
+export const findAllRobots = async (auth) => {
+    try {
+        const response = await axios.get(`${apiUrl}/robots`, 
+        {
+            headers: {
+                'authorization': `Bearer ${auth.token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        return response.data;
+    } catch (err) {
+        return {
+            status: err.response.status,
+            error: true,
+            message: err.response.data.message,
+        };
+    }
+}
+
+export const findAllUserRobots = async (auth, userId) => {
+    try {
+        const response = await axios.get(`${apiUrl}/robots/findAllByUserId?userId=${userId}`, 
+        {
+            headers: {
+                'authorization': `Bearer ${auth.token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        return response.data;
+    } catch (err) {
+        return {
+            status: err.response.status,
+            error: true,
+            message: err.response.data.message,
+        };
+    }
+}

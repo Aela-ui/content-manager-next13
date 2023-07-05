@@ -1,9 +1,10 @@
 'use client';
 
-import { findAllContents } from '@app/api/ApiContent';
+import { findAllContents, findAllUserContents } from '@app/api/ApiContent';
 import { AuthContext } from '@app/contexts/authContext';
 import { useState, useEffect, useContext } from 'react';
 import { ContentCard } from './ContentCard';
+import { getPermission } from '@utils/getPermission';
 
 const ContentCardList = ({ data, updated, setUpdated }) => {
   return(
@@ -52,8 +53,19 @@ const Feed = () => {
       setRows(response);
     }
 
+    const callApiFindAllUserContents = async () => {
+      const response = await findAllUserContents(authState, authState.user.id);
+
+      setContents(response);
+      setRows(response);
+    }
+
+
     try {
-      callApiFindAllContents();
+      if(getPermission(authState.user.role.permissions, "view-all-contents"))
+        callApiFindAllContents();
+      else
+        callApiFindAllUserContents();
     } catch (error) {
       console.log(error);
     }

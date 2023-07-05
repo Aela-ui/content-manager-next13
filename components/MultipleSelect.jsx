@@ -3,7 +3,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
-import { Checkbox, ListItemText, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -19,7 +19,7 @@ const MenuProps = {
 function getStyles(name, personName, theme) {
   return {
     fontWeight:
-      personName.indexOf(name) === -1
+      personName?.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium
   };
@@ -41,9 +41,9 @@ export default function MultipleSelect({ data, selected, setData, label }) {
     let temp = data.filter(e => value.includes(e.name))
     setData(temp)
   };
-
+  
   useEffect(() => {
-    setSelectedNames(selected.map((item) => item.name));
+    setSelectedNames(selected?.map((item) => item.name));
   }, [selected]);
  
   return (

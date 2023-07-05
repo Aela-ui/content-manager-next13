@@ -8,6 +8,8 @@ import { findAllCategories } from "@app/api/ApiCategory";
 import { useRouter } from "next/navigation";
 import { createUser } from "@app/api/ApiUser";
 import AlertComponent from "./AlertComponent";
+import SelectComponent from "./SelectComponent";
+import { findAllRoles } from "@app/api/ApiRole";
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -15,8 +17,9 @@ const RegisterForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [permissao, setPermissao] = useState("");
   const [ categories, setCategories] = useState([]);
+  const [ permissions, setPermissions] = useState([]);
+  const [selectedPermission, setSelectedPermission] = useState({});
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -40,10 +43,24 @@ const RegisterForm = () => {
     }
   }, [authState]);
 
+  useEffect(() => {
+    const callApiFindAllRoles = async () => {
+      const body = await findAllRoles(authState);
+
+      setPermissions(body);
+    }
+
+    try {
+      callApiFindAllRoles();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [authState]);
+
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    const response = await createUser(authState, name, email, password, selectedCategories);
+    const response = await createUser(authState, name, email, password, selectedCategories, selectedPermission);
 
     if(response?.status === 201) {
       setMessage("Novo usuário criado");
@@ -94,11 +111,18 @@ const RegisterForm = () => {
               </div>
 
               <div>
-                <MultipleSelect data={categories} setData={setSelectedCategories} label="Categorias"/>
+                <MultipleSelect data={categories} selected={selectedCategories} setData={setSelectedCategories} label="Categorias"/>
               </div>
 
               <div>
-                <MultipleSelect data={categories} setData={setSelectedCategories} label="Permissão"/>
+                <SelectComponent 
+                  data={permissions} 
+                  selected={selectedPermission}  
+                  type="object"
+                  fieldName="name"
+                  setData={setSelectedPermission} 
+                  disabled={false}
+                />
               </div>
             <div>
               <button type="submit" class="mt-9 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">

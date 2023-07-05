@@ -3,7 +3,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function SelectComponent({ data, selected, setData, type, fieldName }) {
+export default function SelectComponent({ data, selected, setData, type, fieldName, disabled }) {
   const handleChange = (event) => {
     const {
       target: { value },
@@ -20,8 +20,9 @@ export default function SelectComponent({ data, selected, setData, type, fieldNa
             labelId="demo-multiple-name-label"
             id="demo-multiple-name"
             value={selected}
-            renderValue={(item) => item ? `${item.id} - ${item[fieldName]}` : ``}
+            renderValue={(item) => Object.keys(item).length > 0 ? `${item.id} - ${item[fieldName]}` : ``}
             onChange={handleChange}
+            disabled={disabled}
           >
             {data.map((item) => (
               <MenuItem

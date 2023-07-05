@@ -8,9 +8,10 @@ const AuthProvider = ({ children }) => {
     token: "",
     });
 
-    const setUserAuthInfo = ({ token }) => {
+    const setUserAuthInfo = ({ token, data }) => {
         setAuthState({
             token: token,
+            user: data
         });
     };
 

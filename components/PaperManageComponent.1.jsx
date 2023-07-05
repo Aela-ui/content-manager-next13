@@ -5,8 +5,11 @@ import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Link from "next/link";
+import { getPermission } from '@utils/getPermission';
+import { AuthContext } from '@app/contexts/authContext';
 
 export default function PaperManageComponent() {
+  const { authState, isUserAuthenticated } = React.useContext(AuthContext);
   return (
     <center>
       <Box
@@ -39,24 +42,25 @@ export default function PaperManageComponent() {
             Criar Conteúdo
           </Link>
         </Paper>
+        {getPermission(authState.user.role.permissions, "create-users") && (
+          <Paper elevation={3}>
+            <Typography variant="h6" component="h3">
+              Usuário
+            </Typography>
 
-        <Paper elevation={3}>
-          <Typography variant="h6" component="h3">
-            Usuário
-          </Typography>
+            <Divider variant="middle" sx={{ m: 1 }}/>
 
-          <Divider variant="middle" sx={{ m: 1 }}/>
+            <Typography variant="body1" component="p">
+              Aqui você pode cadastrar um novo usuário
+            </Typography>
 
-          <Typography variant="body1" component="p">
-            Aqui você pode cadastrar um novo usuário
-          </Typography>
+            <Divider variant="middle" sx={{ m: 2 }}/>
 
-          <Divider variant="middle" sx={{ m: 2 }}/>
-
-          <Link href="/register" className="indigo_btn">
-            Cadastro Usuário
-          </Link>
-        </Paper>
+            <Link href="/register" className="indigo_btn">
+              Cadastro Usuário
+            </Link>
+          </Paper>
+        )}
 
         <Paper elevation={3}>
           <Typography variant="h6" component="h3">
@@ -71,15 +75,22 @@ export default function PaperManageComponent() {
 
           <Divider variant="middle" sx={{ m: 2 }}/>
 
-          <Stack direction="row" spacing={2}>
-            <Link href="/create-robo" className="indigo_btn">
-              Adicionar Robô
-            </Link>
+          {getPermission(authState.user.role.permissions, "create-robots") ? (
+            <Stack direction="row" spacing={2}>
+              <Link href="/create-robo" className="indigo_btn">
+                Adicionar Robô
+              </Link>
 
+              <Link href="/listing-robot" className="indigo_btn">
+                Listagem
+              </Link>
+            </Stack>
+          ): (
             <Link href="/listing-robot" className="indigo_btn">
               Listagem
             </Link>
-          </Stack>
+          )}
+          
         </Paper>
       </Box>
     </center>

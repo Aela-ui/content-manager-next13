@@ -19,6 +19,7 @@ export default function LoginForm() {
     const response = await login(email, password);
     
     if(response?.token) {
+      console.log(response);
       setAuthState(response);
       router.push('/');
     }

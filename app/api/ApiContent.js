@@ -3,7 +3,6 @@ import { apiUrl } from "./Api";
 
 export const createContent = async (auth, title, description, model, userId, isPublic, categories) => {
     try {
-        console.log(auth, title, description, model, userId, isPublic, categories);
         const response = await axios.post(`${apiUrl}/contents`, { 
             title: title, 
             description: description, 
@@ -131,6 +130,24 @@ export const findAllContents = async (auth) => {
             message: err.response,
         };
     }
+}
+
+export const findAllUserContents = async (auth, userId) => {
+  try {
+      const response = await axios.get(`${apiUrl}/contents/findAllUserContents?userId=${userId}`, {
+          headers: {
+              'authorization': `Bearer ${auth.token}`,
+              'Content-Type': 'application/json',
+          },
+      });
+
+      return response.data;
+  } catch (err) {
+      return {
+          error: true,
+          message: err.response,
+      };
+  }
 }
 
 export const findContent = async (auth, contentId) => {

@@ -1,13 +1,14 @@
 import axios from "axios";
 import { apiUrl } from "./Api";
 
-export const createUser = async (auth, name, email, password, categories) => {
+export const createUser = async (auth, name, email, password, categories, selectedPermission) => {
     try {
         const response = await axios.post(`${apiUrl}/users`, { 
                 name: name,
                 email: email,
                 password: password,
-                categories: categories
+                categories: categories,
+                roleId: selectedPermission.id
         },
         {
             headers: {

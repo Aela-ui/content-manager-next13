@@ -5,7 +5,6 @@ import { useContext, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { AuthContext } from "@app/contexts/authContext"
 import { findAllUsers } from "@app/api/ApiUser"
-import { findAllCategories } from "@app/api/ApiCategory"
 import { createContent, findAllContents, uploadContent } from "@app/api/ApiContent"
 import { TextField } from "@mui/material";
 import { createRobot } from "@app/api/ApiRobot"
@@ -16,7 +15,7 @@ export const CreateRobo = () => {
     const { authState, isUserAuthenticated } = useContext(AuthContext);
     const [name, setName] = useState('');
     const [mac, setMac] = useState('');
-    const [user, setUser] = useState({});
+    const [selectedUsers, setSelectedUsers] = useState([]);
     const [content, setContent] = useState({});
     const [model, setModel] = useState('');
     const [contents, setContents] = useState([]);
@@ -57,8 +56,7 @@ export const CreateRobo = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(name, mac, model, users, content.id);
-        const response = await createRobot(authState, name, mac, model, users, content.id);
+        const response = await createRobot(authState, name, mac, model, selectedUsers, content.id);
 
         if(response?.status === 201) {
             setMessage("Novo robô criado");
@@ -136,7 +134,7 @@ export const CreateRobo = () => {
                         <span className="font-satoshi font-semibold text-base text-gray-700">
                             Usuários
                         </span>
-                        <MultipleSelect data={users} setData={setUser} />
+                        <MultipleSelect data={users} selected={selectedUsers} setData={setSelectedUsers} />
                     </label>
 
                     <div className="flex-end mx-13 mb-5 gap-4">

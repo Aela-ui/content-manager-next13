@@ -5,11 +5,12 @@ import { useContext, useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { AuthContext } from "@app/contexts/authContext"
 import { findAllUsers } from "@app/api/ApiUser"
-import { findAllCategories } from "@app/api/ApiCategory"
+import { findAllCategories, findUserCategories } from "@app/api/ApiCategory"
 import { ToggleButton, ToggleButtonGroup } from "@mui/material"
 import { createContent, editContent, uploadContent } from "@app/api/ApiContent"
 import AlertComponent from "./AlertComponent"
 import { findContent } from "@app/api/ApiContent"
+import { getPermission } from "@utils/getPermission"
 
 export const CreateContent = () => {
     const searchParams = useSearchParams();
@@ -17,7 +18,10 @@ export const CreateContent = () => {
     const { authState, isUserAuthenticated } = useContext(AuthContext);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState({
+        id: authState.user.id,
+        name: authState.user.name
+    });
     const [model, setModel] = useState('');
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [isPublic, setIsPublic] = useState(0);
@@ -37,9 +41,17 @@ export const CreateContent = () => {
             const body = await findAllCategories(authState);
             setCategories(body);
         }
+
+        const callApiFindUserCategories = async () => {
+            const body = await findUserCategories(authState, authState.user.id);
+            setCategories(body);
+        }
         
         try {
-            callApiFindAllCategories();
+            if(getPermission(authState.user.role.permissions, "create-own-contents"))
+                callApiFindUserCategories();
+            else
+                callApiFindAllCategories();
         } catch (error) {
             console.log(error);
         }
@@ -180,6 +192,7 @@ export const CreateContent = () => {
                             setData={setUser} 
                             type="object" 
                             fieldName="name"
+                            disabled={getPermission(authState.user.role.permissions, "create-own-contents")}
                         />
                     </label>
 
@@ -197,7 +210,11 @@ export const CreateContent = () => {
                                 (Educação, Autismo, Psicologia, Saúde...)
                             </span>
                         </span>
-                        <MultipleSelect data={categories} selected={selectedCategories} setData={setSelectedCategories} />
+                        <MultipleSelect 
+                            data={categories} 
+                            selected={selectedCategories} 
+                            setData={setSelectedCategories} 
+                        />
                     </label>
 
                     <label>
