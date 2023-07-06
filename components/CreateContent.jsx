@@ -6,11 +6,12 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { AuthContext } from "@app/contexts/authContext"
 import { findAllUsers } from "@app/api/ApiUser"
 import { findAllCategories, findUserCategories } from "@app/api/ApiCategory"
-import { ToggleButton, ToggleButtonGroup } from "@mui/material"
+import { Button, ToggleButton, ToggleButtonGroup } from "@mui/material"
 import { createContent, editContent, uploadContent } from "@app/api/ApiContent"
 import AlertComponent from "./AlertComponent"
 import { findContent } from "@app/api/ApiContent"
 import { getPermission } from "@utils/getPermission"
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 export const CreateContent = () => {
     const searchParams = useSearchParams();
@@ -27,6 +28,7 @@ export const CreateContent = () => {
     const [isPublic, setIsPublic] = useState(0);
     const [categories, setCategories] = useState([]);
     const [users, setUsers] = useState([]);
+    const [hasFile, setHasFile] = useState(false);
     const [file, setFile] = useState();
     const [open, setOpen] = useState(false);
     const [message, setMessage] = useState("");
@@ -74,13 +76,14 @@ export const CreateContent = () => {
         const callApiFindContent = async () => {
             const {data} = await findContent(authState, searchParams.get('id'));
             console.log(data);
-            const {title, description, model, isPublic, user, categories} = data
+            const {title, description, model, isPublic, user, categories, zip} = data
             setTitle(title);
             setDescription(description);
             setModel(model);
             setIsPublic(isPublic); 
             setUser(user);
             setSelectedCategories(categories.map(({category}) => category));
+            setHasFile(zip ? true : false);
         }
         
         try { 
@@ -231,15 +234,30 @@ export const CreateContent = () => {
                     </label>
 
                     <label>
-                        <span className="font-satoshi font-semibold text-base text-gray-700">
-                            Selecione o Arquivo
-                        </span>
                         <input 
                             type="file"
                             className="form_input"
                             onChange={handleFileChange}
+                            id="contained-button-file"
+                            style={{display: 'none'}}
                             >
                         </input >
+                        <label htmlFor="contained-button-file">
+                            <span 
+                                className="px-5 py-1.5 text-sm bg-indigo-500 text-white
+                                rounded-full
+                                border border-indigo-500
+                                hover:bg-white hover:text-indigo-500" 
+                                type="button"
+                                >
+                                <FileUploadIcon style={{marginRight: '10px'}} />
+                                {file || hasFile ? (
+                                    "Arquivo selecionado"
+                                ): (
+                                    "Selecione o arquivo"
+                                )}
+                            </span>
+                        </label>
                     </label>
 
                     <div className="flex-end mx-13 mb-5 gap-4">
