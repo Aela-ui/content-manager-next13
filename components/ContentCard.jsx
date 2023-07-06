@@ -98,6 +98,7 @@ export default function ContentCard({ content, updated, setUpdated }) {
           </IconButton>
         }
         title={content.title}
+        titleTypographyProps={{variant:'h6'}}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
