@@ -115,6 +115,9 @@ const RegisterForm = () => {
               </div>
 
               <div>
+              <p class="text-center text-indigo-900">
+                Permissão:
+              </p>
                 <SelectComponent 
                   data={permissions} 
                   selected={selectedPermission}  
