@@ -115,6 +115,7 @@ export const CreateContent = () => {
             }
             setMessage("Conteúdo editado");
             setPopUpType("success");
+            router.push('/');
         } else {
             setMessage("Erro ao editar conteúdo");
             setPopUpType("error");
