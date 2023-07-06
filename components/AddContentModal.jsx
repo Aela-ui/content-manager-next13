@@ -42,7 +42,7 @@ export default function AddContentModal({open, contentId, handleClose}) {
         }
 
         try {
-            if(getPermission(authState.user.role.permissions), "view-all-robots") 
+            if(getPermission(authState.user.role.permissions, "view-all-robots")) 
                 callApiFindAllRobots();
             else 
                 callApiFindAllUserRobots();

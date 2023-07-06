@@ -5,10 +5,11 @@ import { useContext, useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { AuthContext } from "@app/contexts/authContext"
 import { findAllUsers } from "@app/api/ApiUser"
-import { findAllContents } from "@app/api/ApiContent"
+import { findAllContents, findAllUserContents } from "@app/api/ApiContent"
 import { TextField } from "@mui/material";
 import { createRobot, editRobot, findOneRobot } from "@app/api/ApiRobot"
 import AlertComponent from "./AlertComponent"
+import { getPermission } from "@utils/getPermission"
 
 export const CreateRobot = () => {
     const searchParams = useSearchParams();
@@ -49,16 +50,25 @@ export const CreateRobot = () => {
     
     useEffect(() => {
         const callApiFindAllContents = async () => {
-            const body = await findAllContents(authState);
-            setContents(body);
+          const response = await findAllContents(authState);
+          setContents(response);
         }
-        
+    
+        const callApiFindAllUserContents = async () => {
+          const response = await findAllUserContents(authState, authState.user.id);
+          setContents(response);
+        }
+    
+    
         try {
+          if(getPermission(authState.user.role.permissions, "view-all-contents"))
             callApiFindAllContents();
+          else
+            callApiFindAllUserContents();
         } catch (error) {
-            console.log(error);
+          console.log(error);
         }
-    }, [authState]);
+      }, [authState]);
     
     useEffect(() => {
         const callApiFindAllUsers = async () => {
@@ -148,6 +158,7 @@ export const CreateRobot = () => {
                             className="form_input"
                             placeholder="Informe o endereço MAC"
                             required
+                            disabled={!getPermission(authState.user.role.permissions, "edit-all-robots")}
                         >
                         </input >
                     </label>
@@ -156,7 +167,7 @@ export const CreateRobot = () => {
                         <span className="font-satoshi font-semibold text-base text-gray-700">
                             Modelo
                         </span>
-                        <SelectComponent data={['Beo', 'Outro']} selected={model} setData={setModel}/>
+                        <SelectComponent data={['Beo', 'Outro']} selected={model} setData={setModel} disabled={!getPermission(authState.user.role.permissions, "edit-all-robots")}/>
                     </label>
 
                     <label>
@@ -176,7 +187,7 @@ export const CreateRobot = () => {
                         <span className="font-satoshi font-semibold text-base text-gray-700">
                             Usuários
                         </span>
-                        <MultipleSelect data={users} selected={selectedUsers} setData={setSelectedUsers} />
+                        <MultipleSelect data={users} selected={selectedUsers} setData={setSelectedUsers} disabled={!getPermission(authState.user.role.permissions, "edit-all-robots")}/>
                     </label>
 
                     <div className="flex-end mx-13 mb-5 gap-4">

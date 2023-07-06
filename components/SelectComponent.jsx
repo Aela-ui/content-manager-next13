@@ -41,6 +41,7 @@ export default function SelectComponent({ data, selected, setData, type, fieldNa
             id="demo-multiple-name"
             value={selected}
             onChange={handleChange}
+            disabled={disabled}
           >
             {data.map((name) => (
               <MenuItem

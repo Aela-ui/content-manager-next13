@@ -25,7 +25,7 @@ function getStyles(name, personName, theme) {
   };
 }
 
-export default function MultipleSelect({ data, selected, setData, label }) {
+export default function MultipleSelect({ data, selected, setData, label, disabled }) {
   const theme = useTheme();
   const [selectedNames, setSelectedNames] = useState([]);
 
@@ -56,6 +56,7 @@ export default function MultipleSelect({ data, selected, setData, label }) {
             multiple
             value={selectedNames}
             onChange={handleChange}
+            disabled={disabled}
           >
             {data.map((item) => (
               <MenuItem

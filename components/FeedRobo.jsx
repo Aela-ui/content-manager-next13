@@ -1,8 +1,9 @@
 'use client';
 
 import RoboCard from "./RoboCard";
-import { findAllRobots } from '@app/api/ApiRobot';
+import { findAllRobots, findAllUserRobots } from '@app/api/ApiRobot';
 import { AuthContext } from '@app/contexts/authContext';
+import { getPermission } from "@utils/getPermission";
 import { useState, useEffect, useContext } from 'react';
 
 const RobotCardList = ({ data }) => {
@@ -23,17 +24,27 @@ const FeedRobo = () => {
     const [rows, setRows] = useState([]);
 
     useEffect(() => {
-        const callApiFindAllRobots = async () => {
-          const response = await findAllRobots(authState);
-          setRows(response);
-        }
-    
-        try {
-          callApiFindAllRobots();
-        } catch (error) {
+      const callApiFindAllRobots = async() => {
+          const body = await findAllRobots(authState);
+          setRows(body);
+      }
+
+      const callApiFindAllUserRobots = async() => {
+          const body = await findAllUserRobots(authState, authState.user.id);
+          console.log(body);
+          setRows(body);
+      }
+
+      try {
+        console.log();
+          if(getPermission(authState.user.role.permissions, "view-all-robots")) 
+              callApiFindAllRobots();
+          else 
+              callApiFindAllUserRobots();
+      } catch (error) {
           console.log(error);
-        }
-    }, []);
+      }
+  }, [authState]);
 
     return (
         <>
