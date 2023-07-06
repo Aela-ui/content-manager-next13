@@ -76,18 +76,18 @@ export default function PaperManageComponent() {
           <Divider variant="middle" sx={{ m: 2 }}/>
 
           {getPermission(authState.user.role.permissions, "create-robots") ? (
-            <Stack direction="row" spacing={2}>
-              <Link href="/create-robo" className="indigo_btn">
-                Adicionar Robô
+            <Stack direction="row" spacing={5}>
+              <Link href="/create-robot" className="indigo_btn">
+                Criar Robô
               </Link>
 
               <Link href="/listing-robot" className="indigo_btn">
-                Listagem
+                Ver Robôs
               </Link>
             </Stack>
           ): (
             <Link href="/listing-robot" className="indigo_btn">
-              Listagem
+              Ver Robôs
             </Link>
           )}
           

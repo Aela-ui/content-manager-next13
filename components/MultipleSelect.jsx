@@ -48,7 +48,7 @@ export default function MultipleSelect({ data, selected, setData, label }) {
  
   return (
     <div>
-      <FormControl fullWidth variant="standard" sx={{ width: 300, mt: 1 }}>
+      <FormControl fullWidth variant="standard" sx={{ width: 300 }}>
         <InputLabel id="demo-multiple-name-label">{label}</InputLabel>
           <Select
             labelId="demo-multiple-name-label"

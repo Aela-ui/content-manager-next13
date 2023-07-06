@@ -15,6 +15,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { indigo } from '@mui/material/colors';
 import Divider from "@mui/material/Divider";
+import Link from "next/link";
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -45,7 +46,14 @@ export default function RoboCard({ robot }) {
         <CardHeader
             action={
             <IconButton aria-label="settings" sx={{ ml: 3 }}>
-                <EditIcon sx={{ color: indigo[500] }} />
+                <Link href={{
+                    pathname: "/create-robot",
+                    query: {
+                    id: robot.id
+                    }
+                }}>
+                    <EditIcon sx={{ color: indigo[500] }} />
+                </Link>
             </IconButton>
             }
             title={robot.nickname}
@@ -53,12 +61,9 @@ export default function RoboCard({ robot }) {
         />
         <Divider variant="middle"/>
         <CardContent>
-            <Typography variant="body2" color="text.secondary">
-                Usuários: {robot.users.map(({ user }) => (
-                <p key={user.id}>
-                  {user.name}
-                </p>
-              ))}
+            <Typography paragraph>Conteúdo:</Typography>
+            <Typography paragraph>
+                {robot.content?.title || 'Sem conteúdo'}
             </Typography>
         </CardContent>
         <CardActions disableSpacing>
@@ -73,11 +78,14 @@ export default function RoboCard({ robot }) {
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
-            <Typography paragraph>Conteúdo:</Typography>
-            <Typography paragraph>
-                {robot.content?.title}
+            <Typography variant="body2" color="text.secondary">
+                Usuários: {robot.users.map(({ user }) => (
+                <p key={user.id}>
+                  {user.name}
+                </p>
+              ))}
             </Typography>
-            </CardContent>
+        </CardContent>
         </Collapse>
     </Card>
     );

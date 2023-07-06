@@ -2,15 +2,16 @@ import Link from "next/link"
 import MultipleSelect from "./MultipleSelect"
 import SelectComponent from "./SelectComponent"
 import { useContext, useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { AuthContext } from "@app/contexts/authContext"
 import { findAllUsers } from "@app/api/ApiUser"
-import { createContent, findAllContents, uploadContent } from "@app/api/ApiContent"
+import { findAllContents } from "@app/api/ApiContent"
 import { TextField } from "@mui/material";
-import { createRobot } from "@app/api/ApiRobot"
+import { createRobot, editRobot, findOneRobot } from "@app/api/ApiRobot"
 import AlertComponent from "./AlertComponent"
 
-export const CreateRobo = () => {
+export const CreateRobot = () => {
+    const searchParams = useSearchParams();
     const router = useRouter();
     const { authState, isUserAuthenticated } = useContext(AuthContext);
     const [name, setName] = useState('');
@@ -27,6 +28,24 @@ export const CreateRobo = () => {
     useEffect(() => {
         if(!isUserAuthenticated()) router.push('/')
     }, []);
+
+    useEffect(() => {
+        const callApiFindOneRobot = async () => {
+            const {nickname, model, mac, content, users } = await findOneRobot(authState, searchParams.get('id'));
+            setName(nickname);
+            setModel(model);
+            setMac(mac);
+            setContent(content);
+            setSelectedUsers(users.map(({user}) => user));
+        }
+        
+        try {
+            if(searchParams.get('id'))
+                callApiFindOneRobot();
+        } catch (error) {
+            console.log(error);
+        }
+    }, [authState]);
     
     useEffect(() => {
         const callApiFindAllContents = async () => {
@@ -68,6 +87,21 @@ export const CreateRobo = () => {
         }
         setOpen(true);
     };
+
+    const handleEdit = async (e) => {
+        e.preventDefault();
+        const response = await editRobot(authState, searchParams.get('id'), name, mac, model, selectedUsers, content.id);
+
+        if(response?.status === 200) {
+            setMessage("Robô editado");
+            setPopUpType("success");
+        } else {
+            console.log(response.message);
+            setMessage("Erro ao editar robô");
+            setPopUpType("error");
+        }
+        setOpen(true);
+    };
     return (
         <>
             {open ?
@@ -81,33 +115,41 @@ export const CreateRobo = () => {
             }
             <section className="w-full max-w-full flex-start flex-col">
                 <h1 className="head_text text-left">
-                    <span className="indigo_gradient">Adicionar Robô</span>
+                    {searchParams.get('id') ? (
+                        <span className="indigo_gradient">Editar Robô</span>
+                    ): (
+                        <span className="indigo_gradient">Criar Robô</span>
+                    )}
                 </h1>
 
                 <p className="desc text-left max-w-md">
                     Adicione um novo robô!
                 </p>
 
-                <form onSubmit={handleSubmit} className="w-full max-w-2xl mt-10 flex flex-col
+                <form onSubmit={searchParams.get('id') ? handleEdit: handleSubmit} className="w-full max-w-2xl mt-10 flex flex-col
                 gap-7 glassmorphism">
                     <label>
-                        <TextField 
-                            variant="standard" 
-                            label="Nome" 
-                            id="outlined-basic" 
-                            onChange={(e) => setName(e.target.value)} 
-                            type="object"
-                        />
+                        <input 
+                            onChange={(e) => setName(e.target.value)}
+                            title="value"
+                            value={name} 
+                            className="form_input"
+                            placeholder="Insira o nome do robô"
+                            required
+                        >
+                        </input >
                     </label>
 
                     <label>
-                        <TextField 
-                            variant="standard" 
-                            label="Mac" 
-                            id="outlined-basic" 
-                            type="object"
-                            onChange={(e) => setMac(e.target.value)} 
-                        />
+                        <input 
+                            onChange={(e) => setMac(e.target.value)}
+                            title="value"
+                            value={mac} 
+                            className="form_input"
+                            placeholder="Informe o endereço MAC"
+                            required
+                        >
+                        </input >
                     </label>
 
                     <label>
@@ -142,14 +184,27 @@ export const CreateRobo = () => {
                             Cancelar
                         </Link>
                             
-                        <button type="submit"
-                            className="px-5 py-1.5 text-sm bg-indigo-500 text-white
-                            rounded-full
-                            border border-indigo-500
-                            hover:bg-white hover:text-indigo-500"
-                        >
-                            Adicionar
-                        </button>
+                        {searchParams.get('id') ? (
+                            <button 
+                                type="submit"
+                                className="px-5 py-1.5 text-sm bg-indigo-500 text-white
+                                rounded-full
+                                border border-indigo-500
+                                hover:bg-white hover:text-indigo-500"
+                            >
+                                Editar
+                            </button>
+                        ): (
+                            <button 
+                                type="submit"
+                                className="px-5 py-1.5 text-sm bg-indigo-500 text-white
+                                rounded-full
+                                border border-indigo-500
+                                hover:bg-white hover:text-indigo-500"
+                            >
+                                Criar
+                            </button>
+                        )}
                     </div>
                 </form>
             </section>
