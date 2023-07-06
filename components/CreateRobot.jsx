@@ -90,6 +90,7 @@ export const CreateRobot = () => {
         if(response?.status === 201) {
             setMessage("Novo robô criado");
             setPopUpType("success");
+            router.push('/listing-robot');
         } else {
             console.log(response.message);
             setMessage("Erro ao criar robô");
@@ -105,6 +106,7 @@ export const CreateRobot = () => {
         if(response?.status === 200) {
             setMessage("Robô editado");
             setPopUpType("success");
+            router.push('/listing-robot');
         } else {
             console.log(response.message);
             setMessage("Erro ao editar robô");

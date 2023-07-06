@@ -5,17 +5,18 @@ import { findAllRobots, findAllUserRobots } from '@app/api/ApiRobot';
 import { AuthContext } from '@app/contexts/authContext';
 import { getPermission } from "@utils/getPermission";
 import { useState, useEffect, useContext } from 'react';
+import Box from '@mui/material/Box';
 
 const RobotCardList = ({ data }) => {
     return(
-      <div className="mt-16 prompt_layout">
+      <>
         {data.map((robot) => (
           <RoboCard 
             key={robot.id}
             robot={robot}
           />
         ))}
-      </div>
+      </>
     )
 }
 
@@ -48,16 +49,33 @@ const FeedRobo = () => {
 
     return (
         <>
-            <h1 className="desc text_center">
+          <section>
+            <center>
+              <h1 className="desc text_center mb-5">
                 Edite
                 <span className="indigo_gradient 
                 text-center"> o seu Robô</span>
-            </h1>
-            <section className='feed'>
-                <RobotCardList 
-                    data={rows}
-                />
-            </section>
+              </h1>
+            </center>
+          </section>
+
+          <Box sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            margin: "auto",
+            width: "fit-content",
+            '& > :not(style)': {
+              m: 2,
+              width: 250,
+              p:1
+            }
+          }}>
+            <RobotCardList 
+              data={rows}
+            />
+          </Box>
+        
+          
         </>
     )
 }

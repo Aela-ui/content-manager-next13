@@ -42,52 +42,52 @@ export default function RoboCard({ robot }) {
     }
 
     return (
-    <Card sx={{ maxWidth: 300 }}>
-        <CardHeader
-            action={
-            <IconButton aria-label="settings" sx={{ ml: 3 }}>
-                <Link href={{
-                    pathname: "/create-robot",
-                    query: {
-                    id: robot.id
-                    }
-                }}>
-                    <EditIcon sx={{ color: indigo[500] }} />
-                </Link>
-            </IconButton>
-            }
-            title={robot.nickname}
-            subheader={robot.mac}
-        />
-        <Divider variant="middle"/>
-        <CardContent>
-            <Typography paragraph>Conteúdo:</Typography>
-            <Typography paragraph>
-                {robot.content?.title || 'Sem conteúdo'}
-            </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-            <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-            >
-                <ExpandMoreIcon sx={{ color: indigo[500] }}/>
-            </ExpandMore>
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <Card sx={{ height: '100%' }}>
+            <CardHeader
+                action={
+                <IconButton aria-label="settings" sx={{ ml: 3 }}>
+                    <Link href={{
+                        pathname: "/create-robot",
+                        query: {
+                        id: robot.id
+                        }
+                    }}>
+                        <EditIcon sx={{ color: indigo[500] }} />
+                    </Link>
+                </IconButton>
+                }
+                title={robot.nickname}
+                subheader={robot.mac}
+            />
+            <Divider variant="middle"/>
             <CardContent>
-            <Typography variant="body2" color="text.secondary">
-                Usuários: {robot.users.map(({ user }) => (
-                <p key={user.id}>
-                  {user.name}
-                </p>
-              ))}
-            </Typography>
-        </CardContent>
-        </Collapse>
-    </Card>
+                <Typography paragraph>Conteúdo:</Typography>
+                <Typography paragraph>
+                    {robot.content?.title || 'Sem conteúdo'}
+                </Typography>
+            </CardContent>
+            <CardActions disableSpacing>
+                <ExpandMore
+                expand={expanded}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+                >
+                    <ExpandMoreIcon sx={{ color: indigo[500] }}/>
+                </ExpandMore>
+            </CardActions>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                    Usuários: {robot.users.map(({ user }) => (
+                    <p key={user.id}>
+                    {user.name}
+                    </p>
+                ))}
+                </Typography>
+            </CardContent>
+            </Collapse>
+        </Card>
     );
 }
 

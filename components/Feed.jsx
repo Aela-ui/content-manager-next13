@@ -75,6 +75,7 @@ const Feed = () => {
 
   return (
     <>
+      <section className='feed'>
         <form className="relative w-full flex-center">
           <input
             type="text"
@@ -84,6 +85,7 @@ const Feed = () => {
             required
             className="search_input peer" />
         </form>
+      </section>
         <Box sx={{
           display: 'flex',
           flexWrap: 'wrap',

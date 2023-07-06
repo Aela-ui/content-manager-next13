@@ -90,7 +90,7 @@ export default function ContentCard({ content, updated, setUpdated }) {
 
   return (
     <>
-    <Card>
+    <Card sx={{ height: '100%' }}>
       <CardHeader
         action={
           <IconButton aria-label="add robot">
