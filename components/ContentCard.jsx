@@ -52,7 +52,6 @@ export default function ContentCard({ content, updated, setUpdated }) {
     setOpenDelete(false);
   };
 
-
   useEffect(() => {
     if(!isUserAuthenticated()) router.push('/')
   }, []);
@@ -114,15 +113,17 @@ export default function ContentCard({ content, updated, setUpdated }) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        {(getPermission(authState.user.role.permissions, "edit-all-contents") || content.user.id === authState.user.id) && (
+        {(getPermission(authState.user.role.permissions, "edit-all-contents") || (content.user.id === authState.user.id && !content.isPublic)) && (
         <>
           <IconButton aria-label="edit the content">
-              <Link href={{
-                pathname: "/create-content",
-                query: {
-                  id: content.id
-                }
-              }}>
+              <Link 
+                href={{
+                  pathname: "/create-content",
+                  query: {
+                    id: content.id
+                  }
+                }}
+              >
                 <EditOutlinedIcon sx={{ color: indigo[500] }} />
               </Link>
            </IconButton>

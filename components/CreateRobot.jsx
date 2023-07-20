@@ -151,19 +151,19 @@ export const CreateRobot = () => {
                         >
                         </input >
                     </label>
-
-                    <label>
-                        <input 
-                            onChange={(e) => setMac(e.target.value)}
-                            title="value"
-                            value={mac} 
-                            className="form_input"
-                            placeholder="Informe o endereço MAC"
-                            required
-                            disabled={!getPermission(authState.user.role.permissions, "edit-all-robots")}
-                        >
-                        </input >
-                    </label>
+                    {getPermission(authState.user.role.permissions, "edit-all-robots") && (
+                        <label>
+                            <input 
+                                onChange={(e) => setMac(e.target.value)}
+                                title="value"
+                                value={mac} 
+                                className="form_input"
+                                placeholder="Informe o endereço MAC"
+                                required
+                            >
+                            </input >
+                        </label>
+                    )}
 
                     <label>
                         <span className="font-satoshi font-semibold text-base text-gray-700">

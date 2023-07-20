@@ -2,7 +2,7 @@ import Link from "next/link"
 import MultipleSelect from "./MultipleSelect"
 import SelectComponent from "./SelectComponent"
 import { useContext, useEffect, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { AuthContext } from "@app/contexts/authContext"
 import { findAllUsers } from "@app/api/ApiUser"
 import { findAllCategories, findUserCategories } from "@app/api/ApiCategory"
@@ -75,7 +75,6 @@ export const CreateContent = () => {
     useEffect(() => {
         const callApiFindContent = async () => {
             const {data} = await findContent(authState, searchParams.get('id'));
-            console.log(data);
             const {title, description, model, isPublic, user, categories, zip} = data
             setTitle(title);
             setDescription(description);
@@ -228,6 +227,7 @@ export const CreateContent = () => {
                         exclusive
                         onChange={handleChange}
                         aria-label="Platform"
+                        disabled={!getPermission(authState.user.role.permissions, "edit-all-contents")}
                     >
                         <ToggleButton value={1}>Público</ToggleButton>
                         <ToggleButton value={0}>Privado</ToggleButton>
