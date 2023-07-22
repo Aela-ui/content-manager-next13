@@ -1,5 +1,6 @@
 'use client';
 import PaperManageComponent from "@components/PaperManageComponent"
+import withAuth from "@components/PrivateRoute";
 
 const ManageForms = () => {
     return (
@@ -13,4 +14,4 @@ const ManageForms = () => {
     )
   }
   
-  export default ManageForms
+  export default withAuth(ManageForms)

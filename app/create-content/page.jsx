@@ -1,5 +1,6 @@
 "use client";
 import { CreateContent } from "@components/CreateContent"
+import withAuth from "@components/PrivateRoute";
 
 const CreateContentPage = () => {
     return (
@@ -7,4 +8,4 @@ const CreateContentPage = () => {
     )
 }
 
-export default CreateContentPage
+export default withAuth(CreateContentPage)

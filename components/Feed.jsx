@@ -24,7 +24,7 @@ const ContentCardList = ({ data, updated, setUpdated }) => {
 }
 
 const Feed = () => {
-  const { authState, isUserAuthenticated } = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
   const [searchText, setSearchText] = useState('');
   const [contents, setContents] = useState([]);
   const [rows, setRows] = useState([]);

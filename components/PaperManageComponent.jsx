@@ -9,7 +9,7 @@ import { getPermission } from '@utils/getPermission';
 import { AuthContext } from '@app/contexts/authContext';
 
 export default function PaperManageComponent() {
-  const { authState, isUserAuthenticated } = React.useContext(AuthContext);
+  const { authState } = React.useContext(AuthContext);
   return (
     <center>
       <Box

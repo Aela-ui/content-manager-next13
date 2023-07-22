@@ -13,7 +13,7 @@ import { findAllRoles } from "@app/api/ApiRole";
 
 const RegisterForm = () => {
   const router = useRouter();
-  const { authState, isUserAuthenticated } = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,10 +24,6 @@ const RegisterForm = () => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [popUpType, setPopUpType] = useState("");
-
-  useEffect(() => {
-    if(!isUserAuthenticated()) router.push('/')
-  }, [])
 
   useEffect(() => {
     const callApiFindAllCategories = async () => {

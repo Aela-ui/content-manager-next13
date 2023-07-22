@@ -1,5 +1,6 @@
 "use client";
 import { CreateRobot } from "@components/CreateRobot"
+import withAuth from "@components/PrivateRoute";
 
 const CreateRobotPage = () => {
     return (
@@ -7,4 +8,4 @@ const CreateRobotPage = () => {
     )
 }
 
-export default CreateRobotPage
+export default withAuth(CreateRobotPage)

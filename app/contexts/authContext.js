@@ -1,22 +1,32 @@
 "use client"
 import React, { useEffect } from "react";
+import jwt_decode from 'jwt-decode';
 
 const AuthContext = React.createContext();
 
 const AuthProvider = ({ children }) => {
     const [authState, setAuthState] = React.useState({
-    token: "",
+        loading: true,
+        token: "",
+        user: null,
     });
 
     const setUserAuthInfo = ({ token, data }) => {
         setAuthState({
+            loading: false,
             token: token,
             user: data
         });
     };
 
     useEffect(() => {
-        setAuthState({ token: localStorage.getItem('token')});
+        if(localStorage.getItem('token')) {
+            setAuthState({ 
+                loading: false,
+                token: localStorage.getItem('token'), 
+                user: jwt_decode(localStorage.getItem('token'))
+            });
+        }
     }, []);
 
     useEffect(() => {
@@ -25,12 +35,7 @@ const AuthProvider = ({ children }) => {
 
     // checks if the user is authenticated or not
     const isUserAuthenticated = () => {
-        const token = localStorage.getItem("token");
-        if (!token) {
-            return false;
-        }
-
-        return true
+        return authState.user;
     };
 
     return (

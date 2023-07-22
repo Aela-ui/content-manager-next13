@@ -8,7 +8,7 @@ import AlertComponent from './AlertComponent';
 
 export default function LoginForm() {
   const router = useRouter();
-  const { setAuthState, isUserAuthenticated } = useContext(AuthContext);
+  const { setAuthState } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [ email, setEmail] = useState('');
   const [ password, setPassword] = useState('');
@@ -19,7 +19,6 @@ export default function LoginForm() {
     const response = await login(email, password);
     
     if(response?.token) {
-      console.log(response);
       setAuthState(response);
       router.push('/');
     }

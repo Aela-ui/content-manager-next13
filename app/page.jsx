@@ -4,6 +4,7 @@ import Feed from "@components/Feed";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./contexts/authContext";
+import withAuth from "@components/PrivateRoute";
 
 const Home = () => {
   const { isUserAuthenticated } = useContext(AuthContext);
@@ -67,4 +68,4 @@ function User(){
   )
 }
 
-export default Home
+export default withAuth(Home)

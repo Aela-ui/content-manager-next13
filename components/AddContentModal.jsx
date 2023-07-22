@@ -23,7 +23,7 @@ const style = {
 };
 
 export default function AddContentModal({open, contentId, handleClose}) {
-    const { authState, isUserAuthenticated } = useContext(AuthContext);
+    const { authState } = useContext(AuthContext);
     const [robots, setRobots] = useState([]);
     const [robot, setRobot] = useState({});
     const [openPopUp, setOpenPopUp] = useState(false);

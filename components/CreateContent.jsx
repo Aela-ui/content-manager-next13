@@ -2,12 +2,12 @@ import Link from "next/link"
 import MultipleSelect from "./MultipleSelect"
 import SelectComponent from "./SelectComponent"
 import { useContext, useEffect, useState } from "react"
-import { useParams, useRouter, useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { AuthContext } from "@app/contexts/authContext"
 import { findAllUsers } from "@app/api/ApiUser"
 import { findAllCategories, findUserCategories } from "@app/api/ApiCategory"
-import { Button, ToggleButton, ToggleButtonGroup } from "@mui/material"
-import { createContent, editContent, uploadContent } from "@app/api/ApiContent"
+import { ToggleButton, ToggleButtonGroup } from "@mui/material"
+import { createContent, editContent, findAllUserContents, uploadContent } from "@app/api/ApiContent"
 import AlertComponent from "./AlertComponent"
 import { findContent } from "@app/api/ApiContent"
 import { getPermission } from "@utils/getPermission"
@@ -16,7 +16,7 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 export const CreateContent = () => {
     const searchParams = useSearchParams();
     const router = useRouter();
-    const { authState, isUserAuthenticated } = useContext(AuthContext);
+    const { authState } = useContext(AuthContext);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [user, setUser] = useState({
@@ -35,8 +35,19 @@ export const CreateContent = () => {
     const [popUpType, setPopUpType] = useState("");
 
     useEffect(() => {
-        if(!isUserAuthenticated()) router.push('/')
-    }, []);
+        const callApiFindAllUserContents = async () => {
+            const response = await findAllUserContents(authState, authState.user.id);
+            if(!response.some(item => item.id === +searchParams.get('id') && item.isPublic === 0))
+                router.push('/');
+        }
+      
+        try {
+            if(!getPermission(authState.user.role.permissions, "view-all-contents"))
+                callApiFindAllUserContents();
+        } catch (error) {
+            console.log(error);
+        }
+    }, [searchParams, authState]);
     
     useEffect(() => {
         const callApiFindAllCategories = async () => {

@@ -38,7 +38,7 @@ const ExpandMore = styled((props) => {
 
 export default function ContentCard({ content, updated, setUpdated }) {
   const [expanded, setExpanded] = useState(false);
-  const { authState, isUserAuthenticated } = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
   const [isDeleting, setIsDeleting] = useState(false);
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -51,10 +51,6 @@ export default function ContentCard({ content, updated, setUpdated }) {
   const handleCloseDelete = () => {
     setOpenDelete(false);
   };
-
-  useEffect(() => {
-    if(!isUserAuthenticated()) router.push('/')
-  }, []);
 
   const handleDelete = async (e) => {
     e.preventDefault();

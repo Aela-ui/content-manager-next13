@@ -1,4 +1,6 @@
+'use client';
 import FeedRobo from "@components/FeedRobo"
+import withAuth from "@components/PrivateRoute"
 
 const ListingRobot = () => {
   return (
@@ -8,4 +10,4 @@ const ListingRobot = () => {
   )
 }
 
-export default ListingRobot
+export default withAuth(ListingRobot)

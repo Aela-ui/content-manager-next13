@@ -30,12 +30,8 @@ const ExpandMore = styled((props) => {
   
 export default function RoboCard({ robot }) {
     const [expanded, setExpanded] = useState(false);
-    const { authState, isUserAuthenticated } = useContext(AuthContext);
+    const { authState } = useContext(AuthContext);
     const router = useRouter();
-
-    useEffect(() => {
-    if(!isUserAuthenticated()) router.push('/')
-    }, []);
 
     function handleExpandClick() {
         setExpanded(!expanded);

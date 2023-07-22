@@ -21,7 +21,7 @@ const RobotCardList = ({ data }) => {
 }
 
 const FeedRobo = () => {
-    const { authState, isUserAuthenticated } = useContext(AuthContext);
+    const { authState } = useContext(AuthContext);
     const [rows, setRows] = useState([]);
 
     useEffect(() => {

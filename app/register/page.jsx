@@ -1,3 +1,4 @@
+import withAuth from '@components/PrivateRoute'
 import RegisterForm from '@components/RegisterForm'
 
 const Register = () => {
@@ -8,4 +9,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default withAuth(Register)

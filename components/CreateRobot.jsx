@@ -7,14 +7,14 @@ import { AuthContext } from "@app/contexts/authContext"
 import { findAllUsers } from "@app/api/ApiUser"
 import { findAllContents, findAllUserContents } from "@app/api/ApiContent"
 import { TextField } from "@mui/material";
-import { createRobot, editRobot, findOneRobot } from "@app/api/ApiRobot"
+import { createRobot, editRobot, findAllUserRobots, findOneRobot } from "@app/api/ApiRobot"
 import AlertComponent from "./AlertComponent"
 import { getPermission } from "@utils/getPermission"
 
 export const CreateRobot = () => {
     const searchParams = useSearchParams();
     const router = useRouter();
-    const { authState, isUserAuthenticated } = useContext(AuthContext);
+    const { authState } = useContext(AuthContext);
     const [name, setName] = useState('');
     const [mac, setMac] = useState('');
     const [selectedUsers, setSelectedUsers] = useState([]);
@@ -27,8 +27,19 @@ export const CreateRobot = () => {
     const [popUpType, setPopUpType] = useState("");
 
     useEffect(() => {
-        if(!isUserAuthenticated()) router.push('/')
-    }, []);
+        const callApiFindAllUserRobots = async () => {
+            const response = await findAllUserRobots(authState, authState.user.id);
+            if(!response.some(item => item.id === +searchParams.get('id')))
+                router.push('/listing-robot');
+        }
+      
+        try {
+            if(!getPermission(authState.user.role.permissions, "view-all-robots"))
+                callApiFindAllUserRobots();
+        } catch (error) {
+            console.log(error);
+        }
+    }, [searchParams, authState]);
 
     useEffect(() => {
         const callApiFindOneRobot = async () => {
