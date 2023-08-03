@@ -1,3 +1,4 @@
+'use client';
 import withAuth from '@components/PrivateRoute'
 import RegisterForm from '@components/RegisterForm'
 
