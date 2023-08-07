@@ -18,10 +18,6 @@ WORKDIR /app
 COPY . .
 RUN yarn install --frozen-lockfile && NODE_ENV=production yarn build
 
-FROM nginx:1.15
-COPY --from=build /build /usr/share/nginx/html
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-
 FROM node:17.1.0-alpine3.12 AS production
 WORKDIR /app
 ENV HOST=0.0.0.0
@@ -35,6 +31,8 @@ COPY --chown=node --from=dependencies /app/node_modules ./node_modules
 USER node
 EXPOSE 3000
 CMD [ "yarn", "start" ]
+
+
 
 
 
