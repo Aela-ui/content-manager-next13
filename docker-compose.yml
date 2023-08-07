@@ -6,7 +6,7 @@ services:
       context: .
       target: development
     ports:
-      - "3001:3000"
+      - "300:3000"
     environment:
       NODE_ENV: development
     volumes:
@@ -41,7 +41,7 @@ services:
   nginx:
     image: nginx
     ports:
-      - "8080:8080"
+      - "8080:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
