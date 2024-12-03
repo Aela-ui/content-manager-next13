@@ -1,34 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Front-end web
+Projeto de Software para a empresa Qiron Robotics
 
-## Getting Started
+## 📖 Descrição
+Este projeto completo foi realizado para a disciplina de Projeto de Software na Universidade Federal de Santa Maria para a Qiron Robotics
 
-First, run the development server:
+## 🛠️ Funcionalidades
+Existem dois tipos de usuários com permissões diferentes: Usuário cliente e o Administrador
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Usuário Cliente: 
+- Cria conteúdos e adiciona em seu robô
+- Consegue buscar por cenários pela Categoria ou Título
+- Visualização dos seu cenários e cenários definidos como público
+- Consegue editar seu robô
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Administrador: 
+- Cadastro de Clientes
+- Gerenciamento de Robôs
+- Gerenciamento de Permissões de Usuários e Cenários (Público ou Privado)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+https://github.com/user-attachments/assets/5de68f9f-f51d-4fe8-a681-5ae43e24e590
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+https://github.com/user-attachments/assets/df9706a0-6945-4719-a50c-e6268bf1ab55
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## 📡 Tecnologias utilizadas
+<p align="left"> <a href="https://github.com/Aela-ui"><img src="https://skillicons.dev/icons?i=react,js"> </a> </p>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ⏳Inicialização
+Esse projeto foi desenvolvido em ambiente Linux, utilizando o Ubuntu 22 e as tecnologias citadas anteriormente, além do nextjs versão 13. Caso você utilize outro sistema operacional, a configuração inicial do projeto pode ser um pouco diferente.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+A preparação do ambiente consiste em instalar as tecnologias citadas anteriormente de acordo com seu sistema operacional.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 🤵🤵‍♀️ Colaboradores
+O projeto foi feito junto a um colega: <a href="https://github.com/chicopalermo">Francisco Palermo</a> (Que contribuiu com o desenvolvimento back-end em nodejs).
